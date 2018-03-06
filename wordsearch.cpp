@@ -51,6 +51,13 @@ bool checkAlphaNum(string str)
     return true;
 }
 
+string toUpper (string str) {
+    
+    for(int i = 0; i<str.length(); i++) {
+        str[i] = toupper(str[i]);
+    }
+    return str;
+}
 
 int main(int argc, char* argv[])
 {
@@ -87,10 +94,7 @@ int main(int argc, char* argv[])
             //cout<<"       " << files[i]<<"::"<<word<<endl;
             if(checkAlphaNum(word))
             {
-                for(int i = 0; i<word.length(); i++)
-                {
-                    word[i] = toupper(word[i]);
-                }
+                word = toUpper (word);
                 wordIndex.insert(word);
                 wordIndex2.insert(word);
             }
@@ -141,10 +145,7 @@ void search (hashTable &wordIndex, BST &wordIndex2) {
     string word_to_be_found;
     cout << "> ";
     cin >> word_to_be_found;
-    for(int i = 0; i<word_to_be_found.length(); i++) {
-        word_to_be_found[i] = toupper(word_to_be_found[i]);
-    }
-    
+    word_to_be_found = toUpper (word_to_be_found);
     
     struct timeval timer_usec;
     int n = 0;
@@ -183,9 +184,7 @@ void insert (hashTable &wordIndex, BST &wordIndex2) {
     string word_to_insert;
     cout << "> ";
     cin >> word_to_insert;
-    for(int i = 0; i<word_to_insert.length(); i++) {
-        word_to_insert[i] = toupper(word_to_insert[i]);
-    }
+    word_to_insert = toUpper (word_to_insert);
     
     struct timeval timer_usec;
     long long int timestamp_usec_before, timestamp_usec_after;
@@ -218,9 +217,8 @@ void deletion (hashTable &wordIndex, BST &wordIndex2) {
     string word_to_delete;
     cout << "> ";
     cin >> word_to_delete;
-    for(int i = 0; i<word_to_delete.length(); i++) {
-        word_to_delete[i] = toupper(word_to_delete[i]);
-    }
+
+    word_to_delete = toUpper (word_to_delete);
     
     struct timeval timer_usec;
     long long int timestamp_usec_before, timestamp_usec_after;
@@ -306,13 +304,8 @@ void rangedSearch (hashTable &wordIndex, BST &wordIndex2) {
     cin >> lower;
     cout << "> ";
     cin >> higher;
-    
-    for(int i = 0; i<lower.length(); i++) {
-        lower[i] = toupper(lower[i]);
-    }
-    for(int i = 0; i<higher.length(); i++) {
-        higher[i] = toupper(higher[i]);
-    }
+    lower = toUpper (lower);
+    higher = toUpper (higher);
     
     struct timeval timer_usec;
     long long int timestamp_usec_before, timestamp_usec_after;

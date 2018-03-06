@@ -34,15 +34,22 @@ int main()
     int ben = binary.search("jj");
     cout<<"search jj - "<<ben<<endl<<std::flush;
 
-
+    binary.printTree (binary.getHead(), "");
+    cout << "Begin deletion" << endl;
     binary.deleteNode("ja");
+    binary.printTree (binary.getHead(), "");
     binary.deleteNode("ja");
+    binary.printTree (binary.getHead(), "");
     binary.deleteNode("aa");
+    binary.printTree (binary.getHead(), "");
     binary.deleteNode("aa");
+    binary.printTree (binary.getHead(), "");
     binary.deleteNode("aa");
+    binary.printTree (binary.getHead(), "");
     binary.deleteNode("aa");
+    binary.printTree (binary.getHead(), "");
     //binary.insert ("aa");
-    cout<<"dekte ja"<<endl;
+    cout<<"delete aa"<<endl;
     binary.printInOrder(binary.getHead());
     
 }

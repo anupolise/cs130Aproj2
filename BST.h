@@ -11,13 +11,13 @@ class BST
         int search(string str, node* head);
         node* searchNode(string str, node* head);
         void rangeSearches (string a, string b, node* pointer, vector <string> &list);
-        node* findSmallNode(node* pointer);
         node* deleteNodeHelper (string str, node* pointer);
 	public:
 		BST();
         ~BST();
 		void insert(string str);
-		void printInOrder(node* head);
+		void printInOrder(node* headz);
+        void printTree (node* headz, string spaces);
 		int countInTree(node* head);
 		int search(string str);
 		void readInTree(string a[],int length);

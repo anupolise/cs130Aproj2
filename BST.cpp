@@ -86,6 +86,14 @@ void BST::printInOrder(node* headz)
 	}
 }
 
+void BST::printTree (node* headz, string spaces) {
+    if (headz != NULL) {
+        cout << spaces << headz->getData () << " " <<headz->getCounter() << endl;
+        printTree (headz->getLeft(), spaces + " ");
+        printTree (headz->getRight(), spaces+" ");
+    }
+}
+
 
 void BST::sorted (node* headz, vector <string> &list) {
 	if (headz!=NULL) {
@@ -180,80 +188,11 @@ node* BST::searchNode(string str, node* pointer)
 	return NULL;
 }
 
-node* BST::findSmallNode(node* pointer)
-{
-	if(pointer->getLeft() == NULL && pointer->getRight() == NULL)
-	{
-		return pointer;
-	}
-	else if(pointer->getLeft()== NULL && pointer->getRight()!=NULL)
-	{
-		return pointer;
-	}
-	else 
-	{
-		findSmallNode(pointer->getRight());
-	}
-
-	return NULL;
-
-}
-
-///node* BST::findNodeBefore(node);
-
-
 void BST::deleteNode(string str)
 {
-	//cout<<"before search"<<endl;
-	node* nodeVal = searchNode(str, head);
-	/*
-	cout<<"after search"<<endl;
-
-	cout<<"node val: "<<nodeVal->getData()<<endl;
-
-	if(nodeVal == NULL)
-	{
-		cout<<"Cannot delete: value not found"<<endl;
-	}
-	*/
-	if (nodeVal != NULL)
-	{
-		if(nodeVal->getCounter()>=1)
-		{
-			//cout<<"node val counter BEFORE: "<<nodeVal->getCounter()<<endl;
-			nodeVal->decrementCounter();
-			//cout<<"node val counter AFTER: "<<nodeVal->getCounter()<<endl;
-		}
-		/*
-		else 
-		{
-			//actually deleting the node
-
-			//for a leaf node
-			if(nodeVal->getLeft() == NULL && nodeVal->getRight() == NULL)
-			{
-				delete nodeVal;
-			}
-
-			else if(nodeVal->getLeft() == NULL || nodeVal->getRight() == NULL)
-			{
-
-			}
-			else
-			{
-				node* switched = findSmallNode(nodeVal);
-				nodeVal->setData(switched->getData());
-				nodeVal->setCounter(switched->getCounter());
-				delete switched;
-
-			}
-		}
-		*/
-	}
+    head = deleteNodeHelper (str, head);
 }
 
-
-/*
 node* BST::deleteNodeHelper (string str, node *pointer) {
 	if (pointer == NULL)  {
 		return pointer;
@@ -273,30 +212,33 @@ node* BST::deleteNodeHelper (string str, node *pointer) {
 	else {
 		if (pointer->getRight() == NULL) {
 			node* tmp = pointer -> getLeft ();
+            pointer->setLeft (NULL);
 			delete pointer;
 			return tmp;
 		}
 		if (pointer ->getLeft() == NULL) {
 			node *tmp = pointer -> getRight();
+            pointer->setRight (NULL);
 			delete pointer;
 			return tmp;
 		}
-		return pointer;
-*/
-/*
+
+
 		// node with two children: Get the inorder successor (smallest
         // in the right subtree)
-        struct node* temp = minValueNode(root->right);
+        node* successor = pointer->getRight();
+        while (successor->getLeft() != NULL) {
+            successor = successor->getLeft();
+        }
  
         // Copy the inorder successor's content to this node
-        root->key = temp->key;
- 
+        pointer->setData (successor->getData());
+        pointer->setCounter (successor->getCounter());
+        successor->setCounter (1);
         // Delete the inorder successor
-        root->right = deleteNode(root->right, temp->key);
-*/
-/*
+        pointer->setRight (deleteNodeHelper(successor->getData(),pointer->getRight()));
 	}
 	return pointer;
 
 }
-*/
+

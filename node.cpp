@@ -30,12 +30,14 @@ node::node(string str, node* ptrL, node* ptrR)
 
 node::~node () {
     //delete data;
+    /*
     if (left != NULL) {
         delete left;
     }
     if (right != NULL) {
         delete right;
     }
+     */
 }
 
 void node::setLeft(node *ptr){left=ptr;}

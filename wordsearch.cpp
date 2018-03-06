@@ -63,7 +63,6 @@ int main(int argc, char* argv[])
 {
     string dir; //
     vector<string> files = vector<string>();
-    hashTable wordIndex (77747);
     BST wordIndex2;
     
     if (argc < 2)
@@ -95,7 +94,6 @@ int main(int argc, char* argv[])
             if(checkAlphaNum(word))
             {
                 word = toUpper (word);
-                wordIndex.insert(word);
                 wordIndex2.insert(word);
             }
            
@@ -117,30 +115,30 @@ int main(int argc, char* argv[])
         cin>>userInput;
         if(userInput == 1)
         {
-             search(wordIndex, wordIndex2);
+             search(wordIndex2);
         }
         else if(userInput == 2)
         {
-            insert(wordIndex, wordIndex2);
+            insert(wordIndex2);
         }
         else if(userInput == 3)
         {
-            deletion(wordIndex, wordIndex2);
+            deletion(wordIndex2);
         }
         else if(userInput == 4)
         {
-            sorted(wordIndex, wordIndex2);
+            sorted(wordIndex2);
         }
         else if(userInput ==5)
         {
-            rangedSearch(wordIndex, wordIndex2);
+            rangedSearch(wordIndex2);
         }
         cout << endl;
     }
     return 0;
 }
 
-void search (hashTable &wordIndex, BST &wordIndex2) {
+void search (BST &wordIndex2) {
     //cout << endl;
     string word_to_be_found;
     cout << "> ";
@@ -172,15 +170,9 @@ void search (hashTable &wordIndex, BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
 
-    n = wordIndex.search (word_to_be_found); // HT
-    if (!gettimeofday(&timer_usec, NULL)) {
-        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
-        (long long int) timer_usec.tv_usec;
-    }
-    cout << "Hash: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
 }
 
-void insert (hashTable &wordIndex, BST &wordIndex2) {
+void insert (BST &wordIndex2) {
     string word_to_insert;
     cout << "> ";
     cin >> word_to_insert;
@@ -204,16 +196,10 @@ void insert (hashTable &wordIndex, BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    wordIndex.insert (word_to_insert); // HT
-    if (!gettimeofday(&timer_usec, NULL)) {
-        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
-        (long long int) timer_usec.tv_usec;
-    }
-    cout << "Hash: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
 }
 
 
-void deletion (hashTable &wordIndex, BST &wordIndex2) {
+void deletion (BST &wordIndex2) {
     string word_to_delete;
     cout << "> ";
     cin >> word_to_delete;
@@ -238,16 +224,10 @@ void deletion (hashTable &wordIndex, BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    wordIndex.deleteValue (word_to_delete); // HT
-    if (!gettimeofday(&timer_usec, NULL)) {
-        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
-        (long long int) timer_usec.tv_usec;
-    }
-    cout << "Hash: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
 }
 
 
-void sorted (hashTable &wordIndex, BST &wordIndex2) {
+void sorted (BST &wordIndex2) {
     string path = "output.txt";
     cout<<path<<endl;
 
@@ -276,13 +256,6 @@ void sorted (hashTable &wordIndex, BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    vector <string> s2 = wordIndex.sort(); // HT
-    if (!gettimeofday(&timer_usec, NULL)) {
-        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
-        (long long int) timer_usec.tv_usec;
-    }
-    cout << "Hash: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
-
 
     for(int i=0; i<s1.size(); i++)
     {
@@ -290,15 +263,10 @@ void sorted (hashTable &wordIndex, BST &wordIndex2) {
     }
 
     output<<endl;
-
-    for(int i=0; i<s2.size(); i++)
-    {
-        output<<s2[i]<<endl;
-    }
 }
 
 
-void rangedSearch (hashTable &wordIndex, BST &wordIndex2) {
+void rangedSearch (BST &wordIndex2) {
     string lower, higher;
     cout << "> ";
     cin >> lower;
@@ -329,12 +297,5 @@ void rangedSearch (hashTable &wordIndex, BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    vector <string> s2 = wordIndex.rangeSearch (lower, higher); // HT
-    if (!gettimeofday(&timer_usec, NULL)) {
-        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
-        (long long int) timer_usec.tv_usec;
-    }
-
-    cout << "Hash: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
 }
 

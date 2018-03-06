@@ -12,7 +12,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "hashTable.h"
 #include "BST.h"
 #include <algorithm>
 
@@ -28,11 +27,11 @@
 int getdir (string dir, vector<string> &files);
 bool makeAlphaNum(string str);
 
-void search (hashTable &wordIndex, BST &wordIndex2);
-void insert (hashTable &wordIndex, BST &wordIndex2);
-void deletion (hashTable &wordIndex, BST &wordIndex2);
-void sorted (hashTable &wordIndex, BST &wordIndex2);
-void rangedSearch(hashTable &wordIndex, BST &wordIndex2);
+void search (BST &wordIndex2);
+void insert (BST &wordIndex2);
+void deletion (BST &wordIndex2);
+void sorted (BST &wordIndex2);
+void rangedSearch(BST &wordIndex2);
 
 
 int main(int argc, char* argv[]);

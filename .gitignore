@@ -30,8 +30,7 @@
 *.exe
 *.out
 *.app
-BSTmain
-HTmain
+AVLmain
 timetest
 main
 output.txt

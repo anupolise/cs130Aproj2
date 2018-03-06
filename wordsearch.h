@@ -12,7 +12,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "BST.h"
+#include "AVL.h"
 #include <algorithm>
 
 #include <time.h>
@@ -27,11 +27,11 @@
 int getdir (string dir, vector<string> &files);
 bool makeAlphaNum(string str);
 
-void search (BST &wordIndex2);
-void insert (BST &wordIndex2);
-void deletion (BST &wordIndex2);
-void sorted (BST &wordIndex2);
-void rangedSearch(BST &wordIndex2);
+void search (AVL &wordIndex2);
+void insert (AVL &wordIndex2);
+void deletion (AVL &wordIndex2);
+void sorted (AVL &wordIndex2);
+void rangedSearch(AVL &wordIndex2);
 
 
 int main(int argc, char* argv[]);

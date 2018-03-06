@@ -1,9 +1,9 @@
-#ifndef BST_H
-#define BST_H
+#ifndef AVL_H
+#define AVL_H
 #include "node.h"
 #include <vector>
 
-class BST
+class AVL
 {
 	private:
 		node* head;
@@ -13,8 +13,8 @@ class BST
         void rangeSearches (string a, string b, node* pointer, vector <string> &list);
         node* deleteNodeHelper (string str, node* pointer);
 	public:
-		BST();
-        ~BST();
+		AVL();
+        ~AVL();
 		void insert(string str);
 		void printInOrder(node* headz);
         void printTree (node* headz, string spaces);

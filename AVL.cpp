@@ -1,23 +1,23 @@
 #include <iostream>
-#include "BST.h"
+#include "AVL.h"
 
 using namespace std;
 
 
-BST::BST()
+AVL::AVL()
 {
 	head = NULL;
 }
 
-BST::~BST() {
+AVL::~AVL() {
     if (head != NULL) {
         delete head;
     }
 }
 
-void BST::insert (string str) { insert(str, head); }
+void AVL::insert (string str) { insert(str, head); }
 
-void BST::insert (string str, node* pointer)
+void AVL::insert (string str, node* pointer)
 {
 	if(pointer == NULL)
 	{
@@ -62,7 +62,7 @@ void BST::insert (string str, node* pointer)
 }
 
 
-int BST::countInTree(node* headz)
+int AVL::countInTree(node* headz)
 {
 	if(headz==NULL)
     {
@@ -75,7 +75,7 @@ int BST::countInTree(node* headz)
 
 }
 
-void BST::printInOrder(node* headz)
+void AVL::printInOrder(node* headz)
 {
 	if(headz!=NULL)
 	{
@@ -86,7 +86,7 @@ void BST::printInOrder(node* headz)
 	}
 }
 
-void BST::printTree (node* headz, string spaces) {
+void AVL::printTree (node* headz, string spaces) {
     if (headz != NULL) {
         cout << spaces << headz->getData () << " " <<headz->getCounter() << endl;
         printTree (headz->getLeft(), spaces + " ");
@@ -95,7 +95,7 @@ void BST::printTree (node* headz, string spaces) {
 }
 
 
-void BST::sorted (node* headz, vector <string> &list) {
+void AVL::sorted (node* headz, vector <string> &list) {
 	if (headz!=NULL) {
 		sorted (headz->getLeft(), list);
 		for (int i = 0; i < headz ->getCounter(); i++) {
@@ -105,9 +105,9 @@ void BST::sorted (node* headz, vector <string> &list) {
 	}
 }
 
-int BST::search(string str) { return search (str, head); }
+int AVL::search(string str) { return search (str, head); }
 
-int BST::search(string str, node* pointer)
+int AVL::search(string str, node* pointer)
 {
 	if(pointer==NULL)
 	{
@@ -129,7 +129,7 @@ int BST::search(string str, node* pointer)
 }
 
 
-void BST::readInTree(string a[], int length)
+void AVL::readInTree(string a[], int length)
 {
 	for(int i=0; i<length; i++)
 	{
@@ -137,17 +137,17 @@ void BST::readInTree(string a[], int length)
 	}
 }
 
-node* BST::getHead()
+node* AVL::getHead()
 {  return head; }
 
 
-vector<string> BST::rangeSearch (string a, string b) {
+vector<string> AVL::rangeSearch (string a, string b) {
     vector <string> v;
     rangeSearches (a, b, head, v);
     return v;
 }
 
-void BST::rangeSearches (string a, string b, node* pointer, vector <string> &list) {
+void AVL::rangeSearches (string a, string b, node* pointer, vector <string> &list) {
     if (pointer != NULL) {
         if (pointer->getData() < a) {
             rangeSearches (a, b, pointer->getRight(), list);
@@ -167,7 +167,7 @@ void BST::rangeSearches (string a, string b, node* pointer, vector <string> &lis
 }
 
 
-node* BST::searchNode(string str, node* pointer)
+node* AVL::searchNode(string str, node* pointer)
 {
 	if(pointer==NULL)
 	{
@@ -188,12 +188,12 @@ node* BST::searchNode(string str, node* pointer)
 	return NULL;
 }
 
-void BST::deleteNode(string str)
+void AVL::deleteNode(string str)
 {
     head = deleteNodeHelper (str, head);
 }
 
-node* BST::deleteNodeHelper (string str, node *pointer) {
+node* AVL::deleteNodeHelper (string str, node *pointer) {
 	if (pointer == NULL)  {
 		return pointer;
 	}

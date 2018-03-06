@@ -12,7 +12,7 @@ Commands:
 1 -- search: enter word to search, returns true if word is found, else false
 2 -- insert: enter word to insert, inserts word into both data structures
 3 -- deletion: deletes occurence of word
-4 -- sorted: writes all the values sorted in alphabetical order to output.txt with BST first, a blank line, then hash table
+4 -- sorted: writes all the values sorted in alphabetical order to output.txt with AVL first, a blank line, then hash table
 5 -- ranged search: enter a lower bound word and an upper bound word, separated by a new line, prints all of the words in between 
 
 Note: Paragraphs on time complexity and the table of time complexities is in resultsTable.txt

@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 {
     string dir; //
     vector<string> files = vector<string>();
-    BST wordIndex2;
+    AVL wordIndex2;
     
     if (argc < 2)
     {
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void search (BST &wordIndex2) {
+void search (AVL &wordIndex2) {
     //cout << endl;
     string word_to_be_found;
     cout << "> ";
@@ -153,7 +153,7 @@ void search (BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
 
-    n = wordIndex2.search (word_to_be_found); // BST
+    n = wordIndex2.search (word_to_be_found); // AVL
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
@@ -164,7 +164,7 @@ void search (BST &wordIndex2) {
     else {
         cout << "false" << endl;
     }
-    cout << "BST: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
@@ -172,7 +172,7 @@ void search (BST &wordIndex2) {
 
 }
 
-void insert (BST &wordIndex2) {
+void insert (AVL &wordIndex2) {
     string word_to_insert;
     cout << "> ";
     cin >> word_to_insert;
@@ -185,12 +185,12 @@ void insert (BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    wordIndex2.insert (word_to_insert); // BST
+    wordIndex2.insert (word_to_insert); // AVL
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
-    cout << "BST: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
@@ -199,7 +199,7 @@ void insert (BST &wordIndex2) {
 }
 
 
-void deletion (BST &wordIndex2) {
+void deletion (AVL &wordIndex2) {
     string word_to_delete;
     cout << "> ";
     cin >> word_to_delete;
@@ -213,12 +213,12 @@ void deletion (BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    wordIndex2.deleteNode(word_to_delete); // BST
+    wordIndex2.deleteNode(word_to_delete); // AVL
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
-    cout << "BST: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
@@ -227,7 +227,7 @@ void deletion (BST &wordIndex2) {
 }
 
 
-void sorted (BST &wordIndex2) {
+void sorted (AVL &wordIndex2) {
     string path = "output.txt";
     cout<<path<<endl;
 
@@ -244,13 +244,13 @@ void sorted (BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     vector <string> s1;
-    wordIndex2.sorted(wordIndex2.getHead(), s1); // BST
+    wordIndex2.sorted(wordIndex2.getHead(), s1); // AVL
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
     
-    cout << "BST: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
@@ -266,7 +266,7 @@ void sorted (BST &wordIndex2) {
 }
 
 
-void rangedSearch (BST &wordIndex2) {
+void rangedSearch (AVL &wordIndex2) {
     string lower, higher;
     cout << "> ";
     cin >> lower;
@@ -282,7 +282,7 @@ void rangedSearch (BST &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    vector <string> s1 = wordIndex2.rangeSearch(lower, higher); // BST
+    vector <string> s1 = wordIndex2.rangeSearch(lower, higher); // AVL
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
@@ -291,7 +291,7 @@ void rangedSearch (BST &wordIndex2) {
     for (int i = 0; i < s1.size(); i++) {
         cout <<s1[i]<<endl;
     }
-    cout << "BST: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;

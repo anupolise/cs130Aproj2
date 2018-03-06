@@ -1,13 +1,13 @@
 
 #include <iostream>
-#include "BST.h"
+#include "AVL.h"
 
 using namespace std;
 
 int main()
 {
     string arr[14] = {"aa","gs","gb","bb","be","hs","ja","ss","sd","as","hs","aa","ja","aa"};
-    BST binary;
+    AVL binary;
     binary.readInTree(arr, 14);
     
     

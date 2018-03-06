@@ -6,9 +6,10 @@ class node25
 {
 	private:
         const int SIZE = 4;
-		string data [SIZE];
-        int counter [SIZE];
-        node25* pointers [SIZE + 1];
+        string data[4] = {"","","",""};
+        int counter[4] = {0,0,0,0};
+        node25 *pointers[5] = {NULL, NULL, NULL, NULL, NULL};
+        int total;
 	public:
 		//constructor
 		node25();
@@ -20,16 +21,19 @@ class node25
 		void setPointer(int index, node25 *ptr);
     
         // sets the data at that index
-		void setData(int index, string str);
+        void setData(int index, string str) { data[index] = str; }
     
         // Returns the index given a string if it exists in this node25, otherwise -1
 		int findIndex(string str);
     
         // Returns the string at that index
-        string indexOf (int i);
+        string getData (int i);
     
         // Returns the counter at that string data
         int getCounter (string str);
+    
+        // Returns the counter at that string data
+        int getCounter (int i);
     
         // increments the counter at that string data
         void incrementCounter (string str);
@@ -52,5 +56,14 @@ class node25
     
         // compares str with each of the data points and returns the interval that str is between
         node25* getInterval (string str);
+    
+        bool isFull () { return total >= SIZE; }
+    
+        bool isLeaf () { return pointers[0] == NULL; }
+    
+        void insert (string str);
+    
+        int getTotal () { return total; }
+    
 };
 #endif

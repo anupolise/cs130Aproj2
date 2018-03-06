@@ -1,28 +1,127 @@
 #include <iostream>
-#include "AVL.h"
+#include "Tree25.h"
 
 using namespace std;
 
 
-AVL::AVL()
+Tree25::Tree25()
 {
 	head = NULL;
 }
 
-AVL::~AVL() {
+Tree25::~Tree25() {
     if (head != NULL) {
         delete head;
     }
 }
 
-void AVL::insert (string str) { insert(str, head); }
+void Tree25::insert (string str) {
+    string rv = "";
+    vector <node25 *> rvpointers;
+    if (head != NULL) {
+        insert(str, head, rv, rvpointers);
+        head = new node25 (str);
+        head->setPointer (0, rvpointers[0]);
+        head->setPointer (1, rvpointers[1]);
+    }
+    else {
+        head = new node25 (str);
+    }
+}
 
-void AVL::insert (string str, node* pointer)
+void Tree25::insert (string str, node25* pointer, string &rv, vector<node25 *> &return_pointers)
 {
+    if (pointer->findIndex (str) != -1) {
+        pointer->incrementCounter (str);
+    }
+    else if (pointer->isLeaf () ) {
+        cout << "Seg fault" << endl;
+        if (! pointer ->isFull()) {
+            pointer->insert (str);
+            cout << "Seg fault4" << endl;
+        }
+        else { // leaf gets full
+            string data [5];
+            int i = 0;
+            while(i < 4 && str < pointer->getData (i)) {
+                data[0] = pointer->getData (i);
+                i++;
+            }
+            data[i] = str;
+            for (int c = i; c < 4; c++) {
+                data[c+1] = pointer->getData (c);
+            }
+            node25* left = new node25 (data[0]);
+            left->insert (data[1]);
+            
+            node25* right = new node25 (data[3]);
+            right->insert (data[4]);
+            
+            rv = data[2];
+            
+            return_pointers.push_back (left);
+            return_pointers.push_back (right);
+        }
+        
+    }
+    else {
+        string returnValue = "";
+        vector <node25 *> rvpointers;
+        insert (str, pointer->getInterval (str), returnValue, rvpointers);
+        if (returnValue != "") {
+            
+            if (!  pointer->isFull()) { // Case where parent is not full
+                int i = 0;
+                while(i < 3 && returnValue > pointer->getData (i)) {
+                    i++;
+                }
+                
+                // shift all the pointers and values over
+                for (int b = 4; b >= i; b --) {
+                    pointer->setPointer (b+1, pointer->getPointer (b));
+                    pointer->setData (b, pointer->getData (b-1));
+                }
+                
+                pointer->setData (i, returnValue);
+                pointer->setPointer (i, rvpointers[0]);
+                pointer->setPointer (i, rvpointers[1]);
+            }
+            else { // Case where parent is full
+                string data [5];
+                vector <node25 *> orderedpointers;
+                int i = 0;
+                while(i < 4 && returnValue < pointer->getData (i)) {
+                    orderedpointers.push_back (pointer->getPointer (i));
+                    data[0] = pointer->getData (i);
+                    i++;
+                }
+                orderedpointers.push_back (rvpointers[0]);
+                orderedpointers.push_back (rvpointers[1]);
+                data[i] = returnValue;
+                for (int c = i; c < 4; c++) {
+                    orderedpointers.push_back(pointer->getPointer(c));
+                    data[c+1] = pointer->getData (c);
+                }
+                
+                node25* left = new node25 (data[0]);
+                left->insert (data[1]);
+                
+                node25* right = new node25 (data[3]);
+                right->insert (data[4]);
+                
+                rv = data[2];
+                
+                return_pointers.push_back (left);
+                return_pointers.push_back (right);
+            }
+        }
+    }
+}
+    /*
 	if(pointer == NULL)
 	{
 		//cout<<"head inserted:"<<str<<endl;
-		node* tmp = new node(str);
+		node25* tmp = new node25(str);
 		head=tmp;
 		//cout<<"head init"<<endl;
 	}
@@ -32,7 +131,7 @@ void AVL::insert (string str, node* pointer)
 		{
 			if(pointer->getRight() == NULL)
 			{
-				node* tmp = new node(str);
+				node25* tmp = new node25(str);
 				pointer->setRight(tmp);
                 //cout<<"str inserted:"<<str<<endl;
 			}
@@ -46,7 +145,7 @@ void AVL::insert (string str, node* pointer)
 		{
 			if(pointer->getLeft() == NULL)
 			{
-				node* tmp = new node(str);
+				node25* tmp = new node25(str);
 				pointer->setLeft(tmp);
 				//cout<<"str inserted:"<<str<<endl;
 			}
@@ -60,9 +159,11 @@ void AVL::insert (string str, node* pointer)
         }
 	}
 }
+*/
 
 
-int AVL::countInTree(node* headz)
+/*
+int Tree25::countInTree(node25* headz)
 {
 	if(headz==NULL)
     {
@@ -74,28 +175,34 @@ int AVL::countInTree(node* headz)
 	}
 
 }
+*/
 
-void AVL::printInOrder(node* headz)
+
+void Tree25::printInOrder(node25* headz)
 {
 	if(headz!=NULL)
 	{
-		printInOrder(headz->getLeft());
-		if (headz ->getCounter() > 0 )
-			cout<<headz->getData()<< " "<< headz->getCounter()<< endl;
-		printInOrder(headz->getRight());
+        for (int i = 0; i < headz->getTotal(); i++) {
+            printInOrder(headz->getPointer (i));
+            cout << headz->getData (i) << " " <<headz->getCounter(i) << endl;
+        }
+        printInOrder (headz->getPointer (headz->getTotal() +1));
 	}
 }
 
-void AVL::printTree (node* headz, string spaces) {
+void Tree25::printTree (node25* headz, string spaces) {
     if (headz != NULL) {
-        cout << spaces << headz->getData () << " " <<headz->getCounter() << endl;
-        printTree (headz->getLeft(), spaces + " ");
-        printTree (headz->getRight(), spaces+" ");
+        for (int i = 0; i < headz->getTotal(); i++) {
+            cout << spaces << headz->getData (i) << " " <<headz->getCounter(i) << endl;
+            
+            printTree (headz->getPointer (i), spaces + " ");
+        }
+        printTree (headz->getPointer (headz->getTotal() +1), spaces+" ");
     }
 }
 
-
-void AVL::sorted (node* headz, vector <string> &list) {
+/*
+void Tree25::sorted (node25* headz, vector <string> &list) {
 	if (headz!=NULL) {
 		sorted (headz->getLeft(), list);
 		for (int i = 0; i < headz ->getCounter(); i++) {
@@ -104,10 +211,12 @@ void AVL::sorted (node* headz, vector <string> &list) {
 		sorted (headz->getRight(), list);
 	}
 }
+*/
 
-int AVL::search(string str) { return search (str, head); }
+/*
+int Tree25::search(string str) { return search (str, head); }
 
-int AVL::search(string str, node* pointer)
+int Tree25::search(string str, node25* pointer)
 {
 	if(pointer==NULL)
 	{
@@ -127,9 +236,9 @@ int AVL::search(string str, node* pointer)
 	}
 	return 0;
 }
+*/
 
-
-void AVL::readInTree(string a[], int length)
+void Tree25::readInTree(string a[], int length)
 {
 	for(int i=0; i<length; i++)
 	{
@@ -137,17 +246,18 @@ void AVL::readInTree(string a[], int length)
 	}
 }
 
-node* AVL::getHead()
+node25* Tree25::getHead()
 {  return head; }
 
 
-vector<string> AVL::rangeSearch (string a, string b) {
+/*
+vector<string> Tree25::rangeSearch (string a, string b) {
     vector <string> v;
     rangeSearches (a, b, head, v);
     return v;
 }
 
-void AVL::rangeSearches (string a, string b, node* pointer, vector <string> &list) {
+void Tree25::rangeSearches (string a, string b, node25* pointer, vector <string> &list) {
     if (pointer != NULL) {
         if (pointer->getData() < a) {
             rangeSearches (a, b, pointer->getRight(), list);
@@ -165,9 +275,9 @@ void AVL::rangeSearches (string a, string b, node* pointer, vector <string> &lis
         }
     }
 }
-
-
-node* AVL::searchNode(string str, node* pointer)
+*/
+/*
+node25* Tree25::searchNode(string str, node25* pointer)
 {
 	if(pointer==NULL)
 	{
@@ -188,12 +298,12 @@ node* AVL::searchNode(string str, node* pointer)
 	return NULL;
 }
 
-void AVL::deleteNode(string str)
+void Tree25::deleteNode(string str)
 {
     head = deleteNodeHelper (str, head);
 }
 
-node* AVL::deleteNodeHelper (string str, node *pointer) {
+node25* Tree25::deleteNodeHelper (string str, node *pointer) {
 	if (pointer == NULL)  {
 		return pointer;
 	}
@@ -211,7 +321,7 @@ node* AVL::deleteNodeHelper (string str, node *pointer) {
 	}
 	else {
 		if (pointer->getRight() == NULL) {
-			node* tmp = pointer -> getLeft ();
+			node25* tmp = pointer -> getLeft ();
             pointer->setLeft (NULL);
 			delete pointer;
 			return tmp;
@@ -226,7 +336,7 @@ node* AVL::deleteNodeHelper (string str, node *pointer) {
 
 		// node with two children: Get the inorder successor (smallest
         // in the right subtree)
-        node* successor = pointer->getRight();
+        node25* successor = pointer->getRight();
         while (successor->getLeft() != NULL) {
             successor = successor->getLeft();
         }
@@ -241,4 +351,4 @@ node* AVL::deleteNodeHelper (string str, node *pointer) {
 	return pointer;
 
 }
-
+*/

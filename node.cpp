@@ -41,7 +41,6 @@ node::~node () {
      */
 }
 
-i
 
 void node::setLeft(node *ptr){left=ptr;}
 void node::setRight(node *ptr){ right=ptr;}

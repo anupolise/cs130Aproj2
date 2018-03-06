@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    string arr[14] = {"aa","gs","gb","bb","be","hs","ja","ss","sd","as","hs","aa","ja","aa"};
+    string arr[14] = {"aa","ja", "ba", "zz", "aa", "ab", "nn"};
     AVL binary;
     binary.readInTree(arr, 14);
     

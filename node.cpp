@@ -4,6 +4,7 @@ using namespace std;
 
 node::node()
 {
+
     data="";
     counter = 0;
     left=NULL;
@@ -39,6 +40,8 @@ node::~node () {
     }
      */
 }
+
+i
 
 void node::setLeft(node *ptr){left=ptr;}
 void node::setRight(node *ptr){ right=ptr;}

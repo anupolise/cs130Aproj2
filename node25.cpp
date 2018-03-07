@@ -230,7 +230,7 @@ vector <node25 *> node25::split (vector <node25 *> v) {
     orderedpointers.push_back (v[0]);
     orderedpointers.push_back (v[2]);
     for (int c = i; c < 4; c++) {
-        orderedpointers.push_back(getPointer(c));
+        orderedpointers.push_back(getPointer(c+1));
         data[c+1] = getData (c);
     }
     

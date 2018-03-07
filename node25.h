@@ -1,6 +1,7 @@
 #ifndef NODE25_H
 #define NODE25_H
 using namespace std;
+#include <vector>
 
 class node25
 {
@@ -63,7 +64,12 @@ class node25
     
         void insert (string str);
     
+        void insert (vector <node25 *> v);
+    
         int getTotal () { return total; }
     
+        vector <node25 *> split (string str);
+ 
+        vector <node25 *> split (vector <node25 *> v);
 };
 #endif

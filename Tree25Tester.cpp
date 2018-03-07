@@ -6,17 +6,17 @@ using namespace std;
 
 int main()
 {
-    string arr[14] = {"aa","ja"};
+    string arr[30] = {"aa","ja","ja", "bd", "bd", "ja", "ra", "bb", "zz", "ff", "df", "gg", "gg", "dd", "ds", "hi", "ai", "at", "as", "av", "hh", "hb"};
     Tree25 tree;
-    tree.readInTree(arr, 2);
+    tree.readInTree(arr,22);
     
     
-    tree.printInOrder(tree.getHead());
+    //tree.printInOrder(tree.getHead());
     
     
     cout<<"header: "<<(tree.getHead())->getData(0)<<endl;
     
-    tree.printInOrder(tree.getHead());
+    tree.printTree(tree.getHead(), "");
     
     /*
     int countin= tree.countInTree(tree.getHead());

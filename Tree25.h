@@ -7,7 +7,7 @@ class Tree25
 {
 	private:
 		node25* head;
-        void insert(string str, node25* pointer, string &rv, vector <node25*> &return_pointers);
+        void insert(string str, node25* pointer, vector <node25*> &return_pointers);
         int search(string str, node25* head);
         node25* searchNode(string str, node25* head);
         void rangeSearches (string a, string b, node25* pointer, vector <string> &list);

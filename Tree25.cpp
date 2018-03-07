@@ -16,150 +16,48 @@ Tree25::~Tree25() {
 }
 
 void Tree25::insert (string str) {
-    string rv = "";
     vector <node25 *> rvpointers;
     if (head != NULL) {
-        insert(str, head, rv, rvpointers);
-        head = new node25 (str);
-        head->setPointer (0, rvpointers[0]);
-        head->setPointer (1, rvpointers[1]);
+        insert(str, head, rvpointers);
+        if (rvpointers.size() > 0) {
+            head = rvpointers[1];
+            head->setPointer (0, rvpointers[0]);
+            head->setPointer (1, rvpointers[2]);
+        }
     }
     else {
         head = new node25 (str);
     }
 }
 
-void Tree25::insert (string str, node25* pointer, string &rv, vector<node25 *> &return_pointers)
+void Tree25::insert (string str, node25* pointer, vector<node25 *> &return_pointers)
 {
     if (pointer->findIndex (str) != -1) {
         pointer->incrementCounter (str);
     }
     else if (pointer->isLeaf () ) {
-        cout << "Seg fault" << endl;
         if (! pointer ->isFull()) {
             pointer->insert (str);
-            cout << "Seg fault4" << endl;
         }
         else { // leaf gets full
-            string data [5];
-            int i = 0;
-            while(i < 4 && str < pointer->getData (i)) {
-                data[0] = pointer->getData (i);
-                i++;
-            }
-            data[i] = str;
-            for (int c = i; c < 4; c++) {
-                data[c+1] = pointer->getData (c);
-            }
-            node25* left = new node25 (data[0]);
-            left->insert (data[1]);
-            
-            node25* right = new node25 (data[3]);
-            right->insert (data[4]);
-            
-            rv = data[2];
-            
-            return_pointers.push_back (left);
-            return_pointers.push_back (right);
+            return_pointers = pointer->split (str);
         }
-        
     }
     else {
-        string returnValue = "";
+        //cout << "Seg fault2" << endl;
         vector <node25 *> rvpointers;
-        insert (str, pointer->getInterval (str), returnValue, rvpointers);
-        if (returnValue != "") {
+        insert (str, pointer->getInterval (str), rvpointers);
+        if (rvpointers.size() > 0) {
             
-            if (!  pointer->isFull()) { // Case where parent is not full
-                int i = 0;
-                while(i < 3 && returnValue > pointer->getData (i)) {
-                    i++;
-                }
-                
-                // shift all the pointers and values over
-                for (int b = 4; b >= i; b --) {
-                    pointer->setPointer (b+1, pointer->getPointer (b));
-                    pointer->setData (b, pointer->getData (b-1));
-                }
-                
-                pointer->setData (i, returnValue);
-                pointer->setPointer (i, rvpointers[0]);
-                pointer->setPointer (i, rvpointers[1]);
+            if (!pointer->isFull()) { // Case where parent is not full
+                pointer -> insert (rvpointers);
             }
             else { // Case where parent is full
-                string data [5];
-                vector <node25 *> orderedpointers;
-                int i = 0;
-                while(i < 4 && returnValue < pointer->getData (i)) {
-                    orderedpointers.push_back (pointer->getPointer (i));
-                    data[0] = pointer->getData (i);
-                    i++;
-                }
-                orderedpointers.push_back (rvpointers[0]);
-                orderedpointers.push_back (rvpointers[1]);
-                data[i] = returnValue;
-                for (int c = i; c < 4; c++) {
-                    orderedpointers.push_back(pointer->getPointer(c));
-                    data[c+1] = pointer->getData (c);
-                }
-                
-                node25* left = new node25 (data[0]);
-                left->insert (data[1]);
-                
-                node25* right = new node25 (data[3]);
-                right->insert (data[4]);
-                
-                rv = data[2];
-                
-                return_pointers.push_back (left);
-                return_pointers.push_back (right);
+                return_pointers = pointer->split (rvpointers);
             }
         }
     }
 }
-    /*
-	if(pointer == NULL)
-	{
-		//cout<<"head inserted:"<<str<<endl;
-		node25* tmp = new node25(str);
-		head=tmp;
-		//cout<<"head init"<<endl;
-	}
-	else
-	{
-		if(str > pointer->getData())
-		{
-			if(pointer->getRight() == NULL)
-			{
-				node25* tmp = new node25(str);
-				pointer->setRight(tmp);
-                //cout<<"str inserted:"<<str<<endl;
-			}
-			else
-			{
-				insert(str, pointer->getRight());
-			}
-			
-		}
-		else if(str < pointer->getData())
-		{
-			if(pointer->getLeft() == NULL)
-			{
-				node25* tmp = new node25(str);
-				pointer->setLeft(tmp);
-				//cout<<"str inserted:"<<str<<endl;
-			}
-			else
-			{
-				insert(str, pointer->getLeft());
-			}
-		}
-        else {
-            pointer->incrementCounter ();
-        }
-	}
-}
-*/
 
 
 /*
@@ -182,22 +80,25 @@ void Tree25::printInOrder(node25* headz)
 {
 	if(headz!=NULL)
 	{
-        for (int i = 0; i < headz->getTotal(); i++) {
+        int i = 0;
+        for (i = 0; i < headz->getTotal(); i++) {
             printInOrder(headz->getPointer (i));
             cout << headz->getData (i) << " " <<headz->getCounter(i) << endl;
         }
-        printInOrder (headz->getPointer (headz->getTotal() +1));
+        printInOrder (headz->getPointer (i));
 	}
 }
 
 void Tree25::printTree (node25* headz, string spaces) {
     if (headz != NULL) {
-        for (int i = 0; i < headz->getTotal(); i++) {
+        int i = 0;
+        for (i = 0; i < headz->getTotal(); i++) {
+            printTree (headz->getPointer (i), spaces + " ");
             cout << spaces << headz->getData (i) << " " <<headz->getCounter(i) << endl;
             
-            printTree (headz->getPointer (i), spaces + " ");
+            //printTree (headz->getPointer (i), spaces + " ");
         }
-        printTree (headz->getPointer (headz->getTotal() +1), spaces+" ");
+        printTree (headz->getPointer (i), spaces+" ");
     }
 }
 

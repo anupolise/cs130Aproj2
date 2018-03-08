@@ -65,6 +65,8 @@ class node25
         void insert (string str);
     
         void insert (vector <node25 *> v);
+
+        void deleteVal (string str);
     
         int getTotal () { return total; }
     

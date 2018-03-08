@@ -174,6 +174,21 @@ void node25::insert (vector <node25 *> v) {
     total += 1;
 }
 
+//if node->count==1 && total>1 && is a leaf
+//string exists 
+void node25::deleteVal(string str)
+{
+    int index = findIndex(str);
+
+    for(int i = index+1; i< total; i++)
+    {
+        data[i-1] = data[i];
+        counter[i-1] = counter[i];
+    }
+    total--;
+}
+
+
 vector <node25 *> node25::split (string str) {
     vector <node25 *> return_pointers;
     string data [5];

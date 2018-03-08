@@ -56,10 +56,15 @@ void node::decrementHeight(){height--;}
 void node::updateHeight(){
     int leftHeight = 0;
     int rightHeight = 0;
+
     if (left !=  NULL) {
+        cout<<"left "<<left->getData()<<endl;
+        left->updateHeight();
         leftHeight = left->getHeight();
     }
     if (right != NULL) {
+        cout<<"right "<<right->getData()<<endl;
+        right->updateHeight();
         rightHeight = right->getHeight();
     }
     if(leftHeight>rightHeight)

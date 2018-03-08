@@ -6,9 +6,9 @@ using namespace std;
 
 int main()
 {
-    string arr[14] = {"aa","ja", "ba", "zz", "aa", "ab", "nn"};
+    string arr[14] = {"aa","ja", "ba", "zz", "aa", "ab", "nn", "pp", "za","fg","ss","sd","fg"};
     AVL binary;
-    binary.readInTree(arr, 3);
+    binary.readInTree(arr, 13);
     
     
     binary.printInOrder(binary.getHead());

@@ -8,16 +8,18 @@ int main()
 {
     string arr[14] = {"aa","ja", "ba", "zz", "aa", "ab", "nn"};
     AVL binary;
-    binary.readInTree(arr, 14);
+    binary.readInTree(arr, 3);
     
     
     binary.printInOrder(binary.getHead());
-    
+    cout << endl;
+    binary.printTree (binary.getHead(), "  ");
     
     cout<<"header: "<<(binary.getHead())->getData()<<endl;
     int countin= binary.countInTree(binary.getHead());
     cout<<"count:"<<countin<<endl;
     
+    /*
     //string* v = binary.rangeSearch ("bd", "zz");
     vector <string> v = binary.rangeSearch ("bd", "zz");
     
@@ -51,5 +53,5 @@ int main()
     //binary.insert ("aa");
     cout<<"delete aa"<<endl;
     binary.printInOrder(binary.getHead());
-    
+    */
 }

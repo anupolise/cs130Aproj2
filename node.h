@@ -9,6 +9,7 @@ class node
         int counter;
 		node* left;
 		node* right;
+		int height;
 	public:
 		//constructor
 		node();
@@ -25,6 +26,11 @@ class node
         void incrementCounter ();
         void decrementCounter();
         void setCounter(int count);
+        int getHeight();
+        void setHeight(int h);
+        void incrementHeight();
+        void decrementHeight();
+        void updateHeight();
 		node* getLeft();
 		node* getRight();
 

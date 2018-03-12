@@ -137,6 +137,17 @@ node25* node25::getInterval (string str)
     return pointers [i];
 }
 
+int node25::getIntervalIndex (string str)
+{
+    int i = 0;
+    for (i = 0; i < total; i ++) {
+        if (str < data [i]) {
+            return i;
+        }
+    }
+    return i;
+}
+
 void node25::insert (string str) {
     int i = 0;
     while (i < 3 && data[i] < str && data[i] != "") {

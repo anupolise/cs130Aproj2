@@ -58,6 +58,8 @@ class node25
         // compares str with each of the data points and returns the interval that str is between
         node25* getInterval (string str);
     
+        int getIntervalIndex (string str);
+    
         bool isFull () { return total >= SIZE; }
     
         bool isLeaf () { return pointers[0] == NULL; }
@@ -70,8 +72,22 @@ class node25
     
         int getTotal () { return total; }
     
+        void setTotal (int tot) { total = tot; }
+    
         vector <node25 *> split (string str);
  
         vector <node25 *> split (vector <node25 *> v);
+    
+        node25 * getMax () {
+            node25* n = new node25 (getData(total-1));
+            n->setCounter (getCounter (total-1));
+            return n;
+        }
+    
+        node25 * getMin ()  {
+            node25* n = new node25 (0);
+            n->setCounter (0);
+            return n;
+        }
 };
 #endif

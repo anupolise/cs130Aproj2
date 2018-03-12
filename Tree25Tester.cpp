@@ -6,9 +6,9 @@ using namespace std;
 
 int main()
 {
-    string arr[30] = {"aa","ja","ja", "bd", "bd", "ja", "ra", "bb", "zz", "ff", "df", "gg", "gg", "dd", "ds", "hi", "ai", "at", "as", "av", "hh", "hb"};
+    string arr[40] = {"aa","ja","ja", "bd", "bd", "ja", "ra", "bb", "zz", "ff", "df", "gg", "gg", "dd", "ds", "hi", "ai", "at", "as", "av", "hh", "hb", "bc", "cf", "gh", "he", "ha", "zg", "sd", "sc", "zg", "gk", "zh", "ss", "sd", "sh", "sf", "sj"};
     Tree25 tree;
-    tree.readInTree(arr,22);
+    tree.readInTree(arr,37);
     
     
     //tree.printInOrder(tree.getHead());

@@ -27,6 +27,7 @@ node::node(string str, node* ptrL, node* ptrR)
     counter = 1;
     left=ptrL;
     right=ptrR;
+    height=1;
 }
 
 node::~node () {
@@ -48,6 +49,33 @@ void node::setData(string str){ data=str;}
 string node::getData(){ return data;}
 node* node::getLeft(){ return left;}
 node* node::getRight(){ return right;}
+int node::getHeight() { return height;}
+void node::setHeight(int h){ height=h;}
+void node::incrementHeight(){height++;}
+void node::decrementHeight(){height--;}
+void node::updateHeight(){
+    int leftHeight = 0;
+    int rightHeight = 0;
+
+    if (left !=  NULL) {
+        cout<<"left "<<left->getData()<<endl;
+        left->updateHeight();
+        leftHeight = left->getHeight();
+    }
+    if (right != NULL) {
+        cout<<"right "<<right->getData()<<endl;
+        right->updateHeight();
+        rightHeight = right->getHeight();
+    }
+    if(leftHeight>rightHeight)
+    {
+        height = leftHeight+1;
+    }
+    else
+    {
+        height = rightHeight+1;   
+    }
+}
 
 int node::getCounter() { return counter; }
 void node::incrementCounter() { counter++; }

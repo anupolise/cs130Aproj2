@@ -15,15 +15,15 @@ AVL::~AVL() {
     }
 }
 
-void AVL::insert (string str) { insert(str, head); }
+void AVL::insert (string str) { head = insert(str, head); }
 
-void AVL::insert (string str, node* pointer)
+node* AVL::insert (string str, node* pointer)
 {
 	if(pointer == NULL)
 	{
 		//cout<<"head inserted:"<<str<<endl;
 		node* tmp = new node(str);
-		head=tmp;
+		return tmp;
 		//cout<<"head init"<<endl;
 	}
 	else
@@ -35,10 +35,20 @@ void AVL::insert (string str, node* pointer)
 				node* tmp = new node(str);
 				pointer->setRight(tmp);
                 //cout<<"str inserted:"<<str<<endl;
+                //pointer = rebalanceTree (pointer);
+                pointer->updateHeight();
+				cout <<"right insert "<< pointer->getData()<< " " << pointer->getHeight() << endl;
 			}
 			else
 			{
-				insert(str, pointer->getRight());
+				pointer->setRight(insert(str, pointer->getRight()));
+				pointer->updateHeight();
+				cout <<"right b rebalace " <<pointer->getData()<< " " << pointer->getHeight() << endl;
+				pointer = rebalanceTree (pointer);
+				//cout << pointer->getData()<< " " << pointer->getHeight() << endl;
+				pointer->updateHeight();
+				//cout << pointer->getHeight() << endl;
+				cout <<"right after reb "<< pointer->getData()<< " " << pointer->getHeight() << endl;
 			}
 			
 		}
@@ -49,18 +59,127 @@ void AVL::insert (string str, node* pointer)
 				node* tmp = new node(str);
 				pointer->setLeft(tmp);
 				//cout<<"str inserted:"<<str<<endl;
+				//pointer = rebalanceTree (pointer);
+				pointer->updateHeight();
+				cout <<" left insert " << pointer->getData()<< " " << pointer->getHeight() << endl;
+				//cout << pointer->getHeight() << endl;
 			}
 			else
 			{
-				insert(str, pointer->getLeft());
+				pointer->setLeft(insert(str, pointer->getLeft()));
+				pointer->updateHeight();
+				cout<<"left before reba " << pointer->getData()<< " " << pointer->getHeight() << endl;
+				pointer = rebalanceTree (pointer);
+				//cout << pointer->getData()<< " " << pointer->getHeight() << endl;
+				pointer->updateHeight();
+				//cout << pointer->getHeight() << endl;
+				cout<<"left after " << pointer->getData()<< " " << pointer->getHeight() << endl;
 			}
 		}
         else {
             pointer->incrementCounter ();
         }
 	}
+	return pointer;
 }
 
+void AVL::rightRotate(node* top, node* b)
+{
+	node* bLeft  = b->getLeft();
+	node* bRight = b->getRight();
+	node* topRight =  top->getRight();
+
+	b->setRight(top);
+	top->setLeft(bRight);
+	top->updateHeight();
+	b->updateHeight();
+}
+void AVL::leftRotate(node* top, node* b) {
+	node* topLeft = top->getLeft();
+	node* bLeft = b->getLeft();
+	node* bRight = b->getRight();
+	top->setRight(bLeft);
+	b->setLeft (top);
+	top->updateHeight();
+	b->updateHeight();
+}
+
+node* AVL::rebalanceTree (node* root) {
+
+	int leftHeight = 0;
+	if (root->getLeft() != NULL)
+	{
+		root->getLeft()->updateHeight();
+	  	leftHeight = root->getLeft()->getHeight();
+	}
+		
+	int rightHeight = 0;
+	if (root->getRight() != NULL)
+	{   
+		root->getRight()->updateHeight();
+		rightHeight = root->getRight()->getHeight();
+	}
+	//cout << "Howdy1";
+	cout<< " right height: " << rightHeight<<endl;
+	cout<< " left height: " << leftHeight<<endl;
+
+	if (leftHeight - rightHeight > 1) {
+		cout << "Howdy";
+		int leftleft = 0;
+		int leftright = 0;
+		if (root->getLeft()->getLeft() != NULL)
+		{
+		  	leftleft = root->getLeft()->getLeft()->getHeight();
+		}
+			
+		int rightHeight = 0;
+		if (root->getLeft()->getRight() != NULL)
+		{   
+			leftright = root->getLeft()->getRight()->getHeight();
+		}
+
+
+		if (leftleft > leftright) {
+			node* temp = root->getLeft();
+			rightRotate (root, root->getLeft());
+			return temp;
+		}
+		else {
+			node * temp = root->getLeft()->getRight();
+			leftRotate (root->getLeft(), root->getLeft()->getRight());
+			root->setLeft(temp);
+			leftRotate (root, root->getLeft());
+			return temp;
+		}
+	}
+	else if (rightHeight - leftHeight > 1) {
+		int rightright = 0;
+		int rightleft = 0;
+		if (root->getRight()->getLeft() != NULL)
+		{
+		  	rightleft = root->getRight()->getLeft()->getHeight();
+		}
+			
+		if (root->getRight()->getRight() != NULL)
+		{   
+			rightright = root->getRight()->getRight()->getHeight();
+		}
+		cout << "Howdy";
+		if (rightright>rightleft) {
+			node* temp = root->getRight();
+			leftRotate (root, root->getRight());
+			return temp;
+		}
+		else {
+			node * temp = root->getRight()->getLeft();
+			rightRotate (root->getRight(), root->getRight()->getLeft());
+			root->setRight(temp);
+			leftRotate (root, root->getRight());
+			return temp;
+		}
+	}
+	return root;
+}
 
 int AVL::countInTree(node* headz)
 {
@@ -88,9 +207,9 @@ void AVL::printInOrder(node* headz)
 
 void AVL::printTree (node* headz, string spaces) {
     if (headz != NULL) {
-        cout << spaces << headz->getData () << " " <<headz->getCounter() << endl;
-        printTree (headz->getLeft(), spaces + " ");
-        printTree (headz->getRight(), spaces+" ");
+    	printTree (headz->getLeft(), spaces + "  ");
+        cout << spaces << headz->getData () << "  " <<headz->getCounter() << endl;
+        printTree (headz->getRight(), spaces+"  ");
     }
 }
 

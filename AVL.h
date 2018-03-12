@@ -7,7 +7,7 @@ class AVL
 {
 	private:
 		node* head;
-        void insert(string str, node* head);
+        node* insert(string str, node* head);
         int search(string str, node* head);
         node* searchNode(string str, node* head);
         void rangeSearches (string a, string b, node* pointer, vector <string> &list);
@@ -22,6 +22,11 @@ class AVL
 		int search(string str);
 		void readInTree(string a[],int length);
 		void deleteNode(string str);
+		void rightRotate(node* top, node* b);
+		void leftRotate(node* top, node* b);
+
+		node* rebalanceTree (node* root);
+
 		node* getHead();
         vector <string>rangeSearch (string a, string b);
         void sorted (node* headz, vector <string> &list);

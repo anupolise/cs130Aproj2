@@ -10,13 +10,22 @@ int main()
     Tree25 tree;
     tree.readInTree(arr,37);
     
+    cout<<"header: "<<(tree.getHead())->getData(0)<<endl;
+    
+    tree.printTree(tree.getHead(), "");
+    
+    string arr2[40] = {"sh","ss","sd", "sf", "ra", "ja", "ra", "bb", "zz", "ff", "df", "gg", "gg", "dd", "ds", "hi", "ai", "at", "as", "av", "hh", "hb", "bc", "cf", "gh", "he", "ha", "zg", "sd", "sc", "zg", "gk", "zh", "ss", "sd", "sh", "sf", "sj"};
+    for (int i = 0; i < 5; i++) {
+        cout << "Delete " << arr2[i]<< endl;
+        tree.deleteNode (arr2[i]);
+        tree.printTree(tree.getHead(), "");
+        cout << endl;
+        cout << endl;
+    }
     
     //tree.printInOrder(tree.getHead());
     
     
-    cout<<"header: "<<(tree.getHead())->getData(0)<<endl;
-    
-    tree.printTree(tree.getHead(), "");
     
     /*
     int countin= tree.countInTree(tree.getHead());

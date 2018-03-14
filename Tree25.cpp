@@ -89,12 +89,26 @@ void Tree25::printInOrder(node25* headz)
 	}
 }
 
+/*
 void Tree25::printTree (node25* headz, string spaces) {
     if (headz != NULL) {
         int i = 0;
         for (i = 0; i < headz->getTotal(); i++) {
             printTree (headz->getPointer (i), spaces + "  ");
             cout << spaces << headz->getData (i) << " " <<headz->getCounter(i) << endl;
+            
+            //printTree (headz->getPointer (i), spaces + " ");
+        }
+        printTree (headz->getPointer (i), spaces+"  ");
+    }
+}
+*/
+void Tree25::printTree (node25* headz, string spaces) {
+    if (headz != NULL) {
+        int i = 0;
+        for (i = headz->getTotal(); i > 0; i--) {
+            printTree (headz->getPointer (i), spaces + "  ");
+            cout << spaces << headz->getData (i-1) << " " <<headz->getCounter(i-1) << endl;
             
             //printTree (headz->getPointer (i), spaces + " ");
         }
@@ -325,7 +339,7 @@ node25* Tree25::merge (string str, node25* pointer, node25* newptr) {
         pointer->setPointer (4, NULL);
         pointer->deleteVal (pointer->getData (indexFromParent -1));
     }
-    else {
+    else { // merge right
         node25* rightNode = pointer->getPointer (indexFromParent);
         
         rightNode->insert (pointer->getData (indexFromParent));

@@ -58,12 +58,12 @@ void node::updateHeight(){
     int rightHeight = 0;
 
     if (left !=  NULL) {
-        cout<<"left "<<left->getData()<<endl;
+        //cout<<"left "<<left->getData()<<endl;
         left->updateHeight();
         leftHeight = left->getHeight();
     }
     if (right != NULL) {
-        cout<<"right "<<right->getData()<<endl;
+       //2 cout<<"right "<<right->getData()<<endl;
         right->updateHeight();
         rightHeight = right->getHeight();
     }

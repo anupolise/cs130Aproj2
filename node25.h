@@ -80,13 +80,13 @@ class node25
     
         node25 * getMax () {
             node25* n = new node25 (getData(total-1));
-            n->setCounter (getCounter (total-1));
+            n->setCounter (getData(total-1), getCounter (total-1));
             return n;
         }
     
         node25 * getMin ()  {
             node25* n = new node25 (0);
-            n->setCounter (0);
+            n->setCounter (getData(0), getCounter (0));
             return n;
         }
 };

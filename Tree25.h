@@ -26,5 +26,7 @@ class Tree25
 		node25* getHead();
         vector <string>rangeSearch (string a, string b);
         void sorted (node25* headz, vector <string> &list);
+        bool borrow (string str, node25* pointer, node25* newptr);
+        node25* merge (string str, node25* pointer, node25* newptr);
 };
 #endif

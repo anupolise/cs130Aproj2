@@ -201,7 +201,147 @@ node25* Tree25::searchNode(string str, node25* pointer)
 */
 void Tree25::deleteNode(string str)
 {
-    head = deleteNodeHelper (str, head);
+    node25* newptr = deleteNodeHelper (str, head);
+    if (newptr == NULL) {
+        head = NULL;
+    }
+    else if (newptr->getTotal () > 0){
+        head = newptr;
+    }
+    else {
+        head = newptr->getPointer (0);
+    }
+}
+
+bool Tree25::borrow (string str, node25* pointer, node25* newptr) {
+    int indexFromParent = pointer->getIntervalIndex (str);
+    bool borrowed = false;
+    
+    // First attempt a borrow from the left, then the right
+    if (indexFromParent > 0) { // borrow from left
+        node25* leftNode = pointer->getPointer (indexFromParent-1);
+        if (leftNode->getTotal() > 1) {
+            newptr->setData(0, pointer->getData (indexFromParent-1));
+            newptr->setCounter (0, pointer->getCounter (indexFromParent-1));
+            newptr->setTotal (1);
+            
+            node25* pushup = leftNode ->getMax();
+            node25* leftNodeGreatestPointer = leftNode->getPointer (leftNode->getTotal());
+            leftNode->deleteVal (pushup->getData(0));
+            leftNode->setPointer (leftNode->getTotal(), NULL);
+            
+            pointer->setData ((indexFromParent-1), pushup->getData(0));
+            pointer->setCounter ((indexFromParent-1), pushup->getCounter (0));
+            
+            
+            newptr->setPointer (1, newptr->getPointer(0));
+            newptr->setPointer (0, leftNodeGreatestPointer);
+            newptr->setTotal (1);
+            
+            pointer->setPointer (indexFromParent, newptr);
+            borrowed = true;
+        }
+    }
+    if (!borrowed && indexFromParent < pointer->getTotal() -1) {
+        // borrow from right
+        node25* rightNode = pointer->getPointer (indexFromParent);
+        if (rightNode->getTotal() > 1) {
+            newptr->setData(0, pointer->getData (indexFromParent));
+            newptr->setCounter (0, pointer->getCounter (indexFromParent));
+            newptr->setTotal (1);
+            
+            node25* pushup = rightNode ->getMin();
+            node25* rightNodeMinimumPointer = rightNode->getPointer (0);
+            for (int i = 1; i < 5; i++) {
+                rightNode->setPointer (i-1, rightNode->getPointer (i));
+            }
+            rightNode->setPointer(5, NULL);
+            rightNode->deleteVal (pushup->getData(0));
+            
+            pointer->setData (indexFromParent, pushup->getData(0));
+            pointer->setCounter (indexFromParent, pushup ->getCounter (0));
+            
+            newptr->setPointer (1, rightNodeMinimumPointer);
+            
+            pointer->setPointer (indexFromParent, newptr);
+            borrowed = true;
+        }
+    }
+    return borrowed;
+}
+
+node25* Tree25::merge (string str, node25* pointer, node25* newptr) {
+    int indexFromParent = pointer->getIntervalIndex (str);
+    // Case 1: all nodes merge together and another empty node is returned
+    if (pointer->getTotal () == 1) {
+        node25* rv = new node25 ();
+        if (indexFromParent > 0) { // Merge with the left child node if empty node is from right side
+            node25* leftNode = pointer->getPointer (indexFromParent-1);
+            rv->insert (leftNode->getData(0));
+            rv->setCounter (leftNode->getData(0), leftNode->getCounter (0));
+            
+            rv->insert (pointer->getData(0));
+            rv->setCounter (pointer->getData(0), pointer->getCounter (0));
+            
+            rv->setPointer (0, leftNode->getPointer (0));
+            rv->setPointer (1, leftNode->getPointer (1));
+            rv->setPointer (2, newptr->getPointer (0));
+            
+            pointer->setCounter (0, 0);
+            pointer->setTotal (0);
+            pointer->setPointer (0, rv);
+        }
+        else { // Merge with the right child node
+            node25* rightNode = pointer->getPointer (indexFromParent);
+            
+            rv->insert (pointer->getData(0));
+            rv->setCounter (pointer->getData(0), pointer->getCounter (0));
+            
+            rv->insert (rightNode->getData(0));
+            rv->setCounter (rightNode->getData(0), rightNode->getCounter (0));
+            
+            rv->setPointer (0, newptr->getPointer (0));
+            rv->setPointer (1, rightNode->getPointer (0));
+            rv->setPointer (2, rightNode->getPointer (1));
+            
+            pointer->setCounter (0, 0);
+            pointer->setTotal (0);
+            pointer->setPointer (0, rv);
+        }
+    }
+    // Case 2: total > 1 and merge left first
+    else if (indexFromParent > 0) { // merge with left
+        node25* leftNode = pointer->getPointer (indexFromParent-1);
+        
+        leftNode->insert (pointer->getData (indexFromParent-1));
+        leftNode->setCounter (pointer->getData (indexFromParent-1), pointer->getCounter (indexFromParent-1));
+        
+        leftNode->setPointer (2, newptr->getPointer (0));
+        
+        
+        for (int i = indexFromParent; i < 4; i++ ){
+            pointer->setPointer(i-1, pointer->getPointer (i));
+        }
+        pointer->setPointer (4, NULL);
+        pointer->deleteVal (pointer->getData (indexFromParent -1));
+    }
+    else {
+        node25* rightNode = pointer->getPointer (indexFromParent);
+        
+        rightNode->insert (pointer->getData (indexFromParent));
+        rightNode->setCounter (pointer->getData (indexFromParent), pointer->getCounter (indexFromParent));
+        
+        
+        rightNode->setPointer (2, rightNode->getPointer (1));
+        rightNode->setPointer (1, rightNode->getPointer (0));
+        rightNode->setPointer (0, newptr->getPointer (0));
+        for (int i = indexFromParent; i < 4; i++ ){
+            pointer->setPointer(i-1, pointer->getPointer (i));
+        }
+        pointer->setPointer (4, NULL);
+        pointer->deleteVal (pointer->getData (indexFromParent));
+    }
+    return pointer;
 }
 
 node25* Tree25::deleteNodeHelper (string str, node25 *pointer) {
@@ -214,156 +354,22 @@ node25* Tree25::deleteNodeHelper (string str, node25 *pointer) {
         node25* child = pointer->getInterval (str);
         int indexFromParent = pointer->getIntervalIndex (str);
         // Goes to the interval where str will be
-        node25* newptr = deleteNodeHelper (str, child));
+        node25* newptr = deleteNodeHelper (str, child);
         
         // If a non empty newptr is returned then nothing major happens
-        if (newptr->getTotal() > 0) {
+        if (newptr == NULL || newptr->getTotal() > 0) {
             pointer->setPointer (indexFromParent, newptr);
         }
-        
         // If an empty newptr is returned
         else {
             // merge or borrow
-            
-            
-            // First attempt a borrow from the left, then the right
-            
-            
             // true if a borrow was successful
-            bool borrowed = false;
-            if (indexFromParent > 0) { // borrow from left
-                node25* leftNode = pointer->getPointer (indexFromParent-1);
-                if (leftNode->getTotal() > 1) {
-                    newptr->setData(0, pointer->getData (indexFromParent-1));
-                    newptr->setCounter (0, pointer->getCounter (indexFromParent-1));
-                
-                    node25* pushup = leftNode ->getMax();
-                    node25* leftNodeGreatestPointer = leftNode->getPointer (leftNode->getTotal());
-                    leftNode->deleteVal (pushup->getData(0));
-                    leftNode->setPointer (leftNode->getTotal(), NULL);
-                    
-                    pointer->setData ((indexFromParent-1), pushup->getData(0));
-                    pointer->setCounter ((indexFromParent-1), pushup->getCounter (0));
-                    
-                    
-                    newptr->setPointer (1, newptr->getPointer(0));
-                    newptr->setPointer (0, leftNodeGreatestPointer);
-                    newptr->setTotal (1);
-                    
-                    pointer->setPointer (indexFromParent, newptr);
-                    borrowed = true;
-                }
-            }
-            if (!borrowed && indexFromParent < total -1) {
-                // borrow from right
-                node25* rightNode = pointer->getPointer (indexFromParent);
-                if (rightNode->getTotal() > 1) {
-                    newptr->setData(0, pointer->getData (indexFromParent));
-                    newptr->setCounter (0, pointer->getCounter (indexFromParent));
-                    
-                    node25* pushup = rightNode ->getMin();
-                    node25* rightNodeMinimumPointer = leftNode->getPointer (0);
-                    for (int i = rightNode->getTotal(); i > 0; i--) {
-                        rightNode->setPointer (i-1, rightNode->getPointer (i));
-                    }
-                    rightNode->setPointer(rightNode->getPointer(i), rightNode);
-                    rightNode->deleteVal (pushup->getData(0));
-                    
-                    pointer->setData (indexFromParent, pushup->getData(0));
-                    pointer->setCounter (indexFromParent, pushup ->getCounter (0));
-                    
-                    newptr->setPointer (1, rightNodeMinimumPointer);
-                    newptr->setTotal (1);
-                    
-                    pointer->setPointer (indexFromParent, newptr);
-                    borrowed = true;
-                }
-            }
+            bool borrowed = borrow (str, pointer, newptr);
             
             // Borrow failed, so merge is required
             if (!borrowed) {
-                // Case 1: all nodes merge together and another empty node is returned
-                if (pointer->getTotal () == 1) {
-                    node25* rv = new node25 ();
-                    if (indexFromParent > 0) { // Merge with the left child node if empty node is from right side
-                        node25* leftNode = pointer->getPointer (indexFromParent-1);
-                        rv->insert (leftNode->getData(0));
-                        rv->setCounter (leftNode->getCounter (0));
-                        
-                        rv->insert (pointer->getData(0));
-                        rv->setCounter (pointer->getCounter (0));
-                        
-                        rv->setPointer (0, leftNode->getPointer (0));
-                        rv->setPointer (1, leftNode->getPointer (1));
-                        rv->setPointer (2, newptr->getPointer (0));
-                        
-                        pointer->setCounter (0, 0);
-                        pointer->setTotal (0);
-                        pointer->setPointer (rv);
-                    }
-                    else { // Merge with the right child node
-                        node25* rightNode = pointer->getPointer (indexFromParent);
-                        
-                        rv->insert (pointer->getData(0));
-                        rv->setCounter (pointer->getCounter (0));
-                        
-                        rv->insert (rightNode->getData(0));
-                        rv->setCounter (rightNode->getCounter (0));
-                        
-                        rv->setPointer (0, newptr->getPointer (0));
-                        rv->setPointer (1, rightNode->getPointer (0));
-                        rv->setPointer (2, rightNode->getPointer (1));
-                        
-                        pointer->setCounter (0, 0);
-                        pointer->setTotal (0);
-                        pointer->setPointer (rv);
-                    }
-                }
-                // Case 2: total > 1 and merge left first
-                else if (indexFromParent > 0) { // merge with left
-                    node25* leftNode = pointer->getPointer (indexFromParent-1);
-                    
-                    newptr->insert (leftNode->getData(0));
-                    newptr->setCounter (leftNode->getCounter (0));
-                    
-                    newptr->insert (pointer->getData(0));
-                    newptr->setCounter (pointer->getCounter (0));
-                    
-                    
-                    
-                    string middleVal = pointer->getData (indexFromParent-1);
-                    int middleValCounter = pointer->getCounter (indexFromParent-1);
-                    node25* mergedNode = new node25 (leftNode->getData(0));
-                    mergedNode->setCounter (leftNode->getData(0), leftNode->getCounter (0));
-                    
-                    mergedNode->insert (middleVal);
-                    mergedNode->setCounter (middleVal, middleValCounter);
-                    
-                    mergedNode->insert (pointer ->getData (0));
-                    mergedNode->setCounter (pointer->getData (0), pointer->getCounter (0));
-                    
-                    for (int i = indexFromParent, i < "placeholder" ){
-                        else if (indexFromParent < total -1) {
-                            // merge with right
-                            node25* rightNode = pointer->getPointer (indexFromParent);
-                            if (rightNode->getTotal() > 1) {
-                                pointer->setData(0, pointer->getData (indexFromParent));
-                                pointer->setCounter (0, parent->getCounter (indexFromParent));
-                                
-                                node25* pushup = rightNode ->getMin();
-                                node25* rightNodeMinimumPointer = leftNode->getPointer (0);
-                                rightNode ->deleteVal (pushup->getData(0));
-                                
-                                pointer->setData (pushup->getData(0));
-                                pointer->setCounter (pushup ->getCounter (0));
-                                borrowed = true;
-                            }
-                        }
-                    }
-                }
+                pointer = merge (str, pointer, newptr);
             }
-                         
-                         
         }
     }
     // Case 2: Search came up true and counter is greater than one
@@ -380,97 +386,40 @@ node25* Tree25::deleteNodeHelper (string str, node25 *pointer) {
 		// non-leaf node: Get the inorder predecessor (largest
         // in the left subtree)
         node25* successor = pointer->getPointer (0);
-        while (successor->getPointer (successor->getTotal ()) != NULL) {
-            successor = successor->getPointer (successor->getTotal ());
+        while (!successor->isLeaf()) {
+            successor = successor->getPointer (0);
         }
- 
+        
+        int index = pointer->findIndex (str);
+        
         // Copy the inorder predecessor's content to this node
-        pointer->setData (successor->getData(successor->getTotal() -1));
-        pointer->setCounter (successor->getCounter(successor->getTotal() -1));
+        pointer->setData (index, successor->getData(successor->getTotal() -1));
+        pointer->setCounter (index, successor->getCounter(successor->getTotal() -1));
         successor->setCounter (successor->getTotal() -1, 1);
         // Delete the inorder successor
-        pointer->setPointer (pointer->findIndex(str),
-                             deleteNodeHelper(successor->getData(),pointer->getRight()));
-	}
+        
+        int indexFromParent = pointer->getIntervalIndex (successor->getData(0));
+        node25* newptr = deleteNodeHelper(successor->getData(successor->getTotal() -1),pointer->getPointer(0));
+        // Need to take of case with empty node
+        
+        // If a non empty newptr is returned then nothing major happens
+        if (newptr == NULL || newptr->getTotal() > 0) {
+            pointer->setPointer (indexFromParent, newptr);
+        }
+        // If an empty newptr is returned
+        else {
+            // merge or borrow
+            // true if a borrow was successful
+            bool borrowed = borrow (str, pointer, newptr);
+            
+            // Borrow failed, so merge is required
+            if (!borrowed) {
+                pointer = merge (str, pointer, newptr);
+            }
+        }
+    }
 	return pointer;
 
 }
                          
-             
-                         /*
-                         else if (pointer->isLeaf ()) {
-                             // merge or borrow
-                             
-                             // borrow from left
-                             int indexFromParent = parent->getIntervalIndex (str);
-                             
-                             // true if a borrow was successful
-                             bool borrowed = false;
-                             if (indexFromParent > 0) { // borrow from left
-                                 node25* leftNode = parent->getPointer (indexFromParent-1);
-                                 if (leftNode->getTotal() > 1) {
-                                     pointer->setData(0, parent->getData (indexFromParent-1));
-                                     pointer->setCounter (0, parent->getCounter (indexFromParent-1));
-                                     
-                                     node25* pushup = leftNode ->getMax();
-                                     node25* leftNodeGreatestPointer = leftNode->getPointer (leftNode->getTotal());
-                                     leftNode ->deleteVal (pushup->getData(0));
-                                     
-                                     parent->setData ((indexFromParent-1), pushup->getData(0));
-                                     parent->setCounter ((indexFromParent-1), pushup->getCounter (0));
-                                     borrowed = true;
-                                 }
-                             }
-                             if (!borrowed && indexFromParent < total -1) {
-                                 // borrow from right
-                                 node25* rightNode = parent->getPointer (indexFromParent);
-                                 if (rightNode->getTotal() > 1) {
-                                     pointer->setData(0, parent->getData (indexFromParent));
-                                     pointer->setCounter (0, parent->getCounter (indexFromParent));
-                                     
-                                     node25* pushup = rightNode ->getMin();
-                                     node25* rightNodeMinimumPointer = leftNode->getPointer (0);
-                                     rightNode ->deleteVal (pushup->getData(0));
-                                     
-                                     parent->setData (pushup->getData(0));
-                                     parent->setCounter (pushup ->getCounter (0));
-                                     borrowed = true;
-                                 }
-                             }
-                             
-                             if (!borrowed) {
-                                 if (indexFromParent > 0) { // merge with left
-                                     node25* leftNode = parent->getPointer (indexFromParent-1);
-                                     string middleVal = parent->getData (indexFromParent-1);
-                                     int middleValCounter = parent->getCounter (indexFromParent-1);
-                                     node25* mergedNode = new node25 (leftNode->getData(0));
-                                     mergedNode->setCounter (leftNode->getData(0), leftNode->getCounter (0));
-                                     
-                                     mergedNode->insert (middleVal);
-                                     mergedNode->setCounter (middleVal, middleValCounter);
-                                     
-                                     mergedNode->insert (pointer ->getData (0));
-                                     mergedNode->setCounter (pointer->getData (0), pointer->getCounter (0));
-                                     
-                                     for (int i = indexFromParent, i <
-                                          }
-                                          else if (indexFromParent < total -1) {
-                                              // merge with right
-                                              node25* rightNode = parent->getPointer (indexFromParent);
-                                              if (rightNode->getTotal() > 1) {
-                                                  pointer->setData(0, parent->getData (indexFromParent));
-                                                  pointer->setCounter (0, parent->getCounter (indexFromParent));
-                                                  
-                                                  node25* pushup = rightNode ->getMin();
-                                                  node25* rightNodeMinimumPointer = leftNode->getPointer (0);
-                                                  rightNode ->deleteVal (pushup->getData(0));
-                                                  
-                                                  parent->setData (pushup->getData(0));
-                                                  parent->setCounter (pushup ->getCounter (0));
-                                                  borrowed = true;
-                                              }
-                                          }
-                                          
-                                          }
-                                          }
-*/
+

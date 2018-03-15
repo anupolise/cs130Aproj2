@@ -17,6 +17,7 @@ class Tree25
         ~Tree25();
     
 		void insert(string str);
+		int getTotal(node25* head);
 		void printInOrder(node25* headz);
         void printTree (node25* headz, string spaces);
 		int countInTree(node25* head);

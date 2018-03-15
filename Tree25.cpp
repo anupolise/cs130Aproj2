@@ -128,7 +128,7 @@ void Tree25::sorted (node25* headz, vector <string> &list) {
 }
 */
 
-/*
+
 int Tree25::search(string str) { return search (str, head); }
 
 int Tree25::search(string str, node25* pointer)
@@ -151,7 +151,7 @@ int Tree25::search(string str, node25* pointer)
 	}
 	return 0;
 }
-*/
+
 
 void Tree25::readInTree(string a[], int length)
 {
@@ -213,6 +213,22 @@ node25* Tree25::searchNode(string str, node25* pointer)
 	return NULL;
 }
 */
+
+int Tree25::getTotal(node25* head)
+{
+    int counter= 0;
+    if(headz!=NULL)
+    {
+        int i=0;
+        for (i = 0; i < headz->getTotal(); i++) {
+            counter+=head->getCounter(i)+getTotal(headz->getPointer (i));
+        }
+        counter+=getTotal(headz->getPointer (i));
+    }
+
+    return counter;
+}
+
 void Tree25::deleteNode(string str)
 {
     node25* newptr = deleteNodeHelper (str, head);

@@ -7,6 +7,7 @@ node::node()
 
     data="";
     counter = 0;
+    height=1;
     left=NULL;
     right=NULL;
     
@@ -18,6 +19,7 @@ node::node(string str)
     counter = 1;
     left=NULL;
     right=NULL;
+    height=1;
     
 }
 
@@ -27,7 +29,7 @@ node::node(string str, node* ptrL, node* ptrR)
     counter = 1;
     left=ptrL;
     right=ptrR;
-    height=1;
+    updateHeight();
 }
 
 node::~node () {
@@ -59,12 +61,12 @@ void node::updateHeight(){
 
     if (left !=  NULL) {
         //cout<<"left "<<left->getData()<<endl;
-        left->updateHeight();
+        //left->updateHeight();
         leftHeight = left->getHeight();
     }
     if (right != NULL) {
        //2 cout<<"right "<<right->getData()<<endl;
-        right->updateHeight();
+        //right->updateHeight();
         rightHeight = right->getHeight();
     }
     if(leftHeight>rightHeight)

@@ -23,10 +23,9 @@ node* AVL::insert (string str, node* pointer)
 	//if theres nothing in the tree
 	if(pointer == NULL)
 	{
-		//cout<<"head inserted:"<<str<<endl;
 		node* tmp = new node(str);
+		tmp->updateHeight();
 		return tmp;
-		//cout<<"head init"<<endl;
 	}
 
 	else
@@ -42,8 +41,7 @@ node* AVL::insert (string str, node* pointer)
 
 				//set new node to right
 				pointer->setRight(tmp);
-                //cout<<"str inserted:"<<str<<endl;
-                //pointer = rebalanceTree (pointer);
+
 
                 pointer->updateHeight();
 				cout <<"right insert "<< pointer->getData()<< " " << pointer->getHeight() << endl;
@@ -57,8 +55,6 @@ node* AVL::insert (string str, node* pointer)
 				pointer = rebalanceTree (pointer);
 				//cout << pointer->getData()<< " " << pointer->getHeight() << endl;
 				pointer->updateHeight();
-				//cout << pointer->getHeight() << endl;
-				//cout <<"right after reb "<< pointer->getData()<< " " << pointer->getHeight() << endl;
 			}
 			
 		}
@@ -152,7 +148,7 @@ node* AVL::rebalanceTree (node* root) {
 		}
 
 
-		if (leftleft > leftright) {
+		if (leftleft >= leftright) {
 			cout<<"left-left rotate"<<endl;
 			node* temp = root->getLeft();
 			rightRotate (root, root->getLeft());
@@ -184,7 +180,7 @@ node* AVL::rebalanceTree (node* root) {
 
 		cout << "Howdy2";
 
-		if (rightright>rightleft) {
+		if (rightright>=rightleft) {
 			cout<<"right-right rotate"<<endl;
 			node* temp = root->getRight();
 			leftRotate (root, root->getRight());
@@ -228,9 +224,11 @@ void AVL::printInOrder(node* headz)
 
 void AVL::printTree (node* headz, string spaces) {
     if (headz != NULL) {
-    	printTree (headz->getLeft(), spaces + "  ");
-        cout << spaces << headz->getData () << "  " <<headz->getCounter() << endl;
         printTree (headz->getRight(), spaces+"  ");
+    	//printTree (headz->getLeft(), spaces + "  ");
+        cout << spaces << headz->getData () << "  " <<headz->getCounter()<<" "<<"h= "<<headz->getHeight() << endl;
+        //printTree (headz->getRight(), spaces+"  ");
+      	printTree (headz->getLeft(), spaces + "  ");
     }
 }
 
@@ -340,16 +338,21 @@ node* AVL::deleteNodeHelper (string str, node *pointer) {
 
 	if (pointer->getData() < str) {
 		pointer->setRight (deleteNodeHelper(str, pointer->getRight()));
+		pointer->updateHeight();
+		pointer = rebalanceTree(pointer);
 		return pointer;
 	}
 	else if (pointer->getData() > str) {
 		pointer->setLeft (deleteNodeHelper(str, pointer->getLeft()));
+		pointer->updateHeight();
+		pointer= rebalanceTree(pointer);
 		return pointer;
 	}
 	else if (pointer->getCounter() > 1) {
 		pointer->decrementCounter();
 	}
 	else {
+		//if the thing we delete nly has one child
 		if (pointer->getRight() == NULL) {
 			node* tmp = pointer -> getLeft ();
             pointer->setLeft (NULL);
@@ -377,6 +380,8 @@ node* AVL::deleteNodeHelper (string str, node *pointer) {
         successor->setCounter (1);
         // Delete the inorder successor
         pointer->setRight (deleteNodeHelper(successor->getData(),pointer->getRight()));
+        pointer->updateHeight();
+        pointer = rebalanceTree(pointer);
 	}
 	return pointer;
 

@@ -37,7 +37,7 @@ node25::~node25 () {
 
 int node25::findIndex(string str)
 {
-    for(int i=0; i<SIZE; i++)
+    for(int i=0; i<getTotal(); i++)
     {
         if(str == (data[i]))
         {

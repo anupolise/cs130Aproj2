@@ -85,7 +85,7 @@ class node25
         }
     
         node25 * getMin ()  {
-            node25* n = new node25 (0);
+            node25* n = new node25 (getData(0));
             n->setCounter (getData(0), getCounter (0));
             return n;
         }

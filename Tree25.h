@@ -16,8 +16,9 @@ class Tree25
 		Tree25();
         ~Tree25();
     
+        
 		void insert(string str);
-		int getTotal(node25* head);
+		int getTotal(node25* headz);
 		void printInOrder(node25* headz);
         void printTree (node25* headz, string spaces);
 		int countInTree(node25* head);
@@ -27,7 +28,7 @@ class Tree25
 		node25* getHead();
         vector <string>rangeSearch (string a, string b);
         void sorted (node25* headz, vector <string> &list);
-        bool borrow (string str, node25* pointer, node25* newptr);
-        node25* merge (string str, node25* pointer, node25* newptr);
+        bool borrow (string str, node25* pointer, node25* newptr, int indexFromParent);
+        node25* merge (string str, node25* pointer, node25* newptr, int indexFromParent);
 };
 #endif

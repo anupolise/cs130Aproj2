@@ -165,7 +165,7 @@ node25* Tree25::getHead()
 {  return head; }
 
 
-/*
+
 vector<string> Tree25::rangeSearch (string a, string b) {
     vector <string> v;
     rangeSearches (a, b, head, v);
@@ -173,46 +173,30 @@ vector<string> Tree25::rangeSearch (string a, string b) {
 }
 
 void Tree25::rangeSearches (string a, string b, node25* pointer, vector <string> &list) {
+
     if (pointer != NULL) {
-        if (pointer->getData() < a) {
-            rangeSearches (a, b, pointer->getRight(), list);
-        }
-        else if (pointer->getData () > b) {
-            rangeSearches (a, b, pointer->getLeft(), list);
-        }
-        else {
-            //cout << pointer->getData() << endl;
-            for (int i = 0; i < pointer->getCounter(); i++) {
-                list.push_back (pointer->getData());
+        int i = 0;
+        for (i = 0; i < pointer->getTotal(); i++) {
+           
+            if(pointer->getData(i) >=a && pointer->getData(i)<=b){
+                //cout << pointer->getData() << endl;
+             
+                for (int j = 0; j< pointer->getCounter(i); j++) {
+                    list.push_back (pointer->getData(i));
+                }
+                rangeSearches (a, b, pointer->getPointer(i), list);
+                //rangeSearches (a, b, pointer->getLeft(), list);
             }
-            rangeSearches (a, b, pointer->getRight(), list);
-            rangeSearches (a, b, pointer->getLeft(), list);
+            else if (pointer->getData(i) > a) {
+                rangeSearches (a, b, pointer->getPointer(i), list);
+            }
         }
+        rangeSearches(a, b, pointer->getPointer(i), list);
+        
     }
 }
-*/
-/*
-node25* Tree25::searchNode(string str, node25* pointer)
-{
-	if(pointer==NULL)
-	{
-		return 0;
-	}
-	else if(pointer->getData()==str)
-	{
-		return pointer;
-	}
-	else if(pointer->getData()>str)
-	{
-		return searchNode(str, pointer->getLeft());
-	}
-	else if(pointer->getData()<str)
-	{
-		return searchNode(str, pointer->getRight());
-	}
-	return NULL;
-}
-*/
+
+
 
 int Tree25::getTotal(node25* headz)
 {

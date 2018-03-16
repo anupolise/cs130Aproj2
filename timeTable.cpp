@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "hashTable.h"
+#include "Tree25.h"
 #include "AVL.h"
 #include <algorithm>
 
@@ -53,7 +53,7 @@ bool checkAlphaNum(string str)
 }
 
 
-void search (hashTable &wordIndex, AVL &wordIndex2, vector <string> &v) {
+void search (Tree25 &wordIndex, AVL &wordIndex2, vector <string> &v) {
     //cout << endl;
     int msecsAVL = 0;
     int msecsHT = 0;
@@ -85,13 +85,13 @@ void search (hashTable &wordIndex, AVL &wordIndex2, vector <string> &v) {
         msecsHT += (timestamp_usec_after - timestamp_usec_before);
         //cout << "Hash: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
     }
-    cout << "AVL " << v.size()<<" searches = " << msecsAVL << " microseconds." << endl;
-    cout << "HT  " << v.size()<<" searches = " << msecsHT << " microseconds."<< endl;
+    cout << "AVL  " << v.size()<<" searches = " << msecsAVL << " microseconds." << endl;
+    cout << "2-5  " << v.size()<<" searches = " << msecsHT << " microseconds."<< endl;
 }
 
 
 
-void deletion (hashTable &wordIndex, AVL &wordIndex2, vector <string> &v) {
+void deletion (Tree25 &wordIndex, AVL &wordIndex2, vector <string> &v) {
     int msecsAVL = 0;
     int msecsHT = 0;
     for (int i = 0; i < v.size(); i++) {
@@ -115,7 +115,7 @@ void deletion (hashTable &wordIndex, AVL &wordIndex2, vector <string> &v) {
             (long long int) timer_usec.tv_usec;
         }
         
-        wordIndex.deleteValue (v[i]); // HT
+        wordIndex.deleteNode(v[i]); // HT
         if (!gettimeofday(&timer_usec, NULL)) {
             timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
             (long long int) timer_usec.tv_usec;
@@ -123,12 +123,12 @@ void deletion (hashTable &wordIndex, AVL &wordIndex2, vector <string> &v) {
         msecsHT += (timestamp_usec_after - timestamp_usec_before);
         //cout << "Hash: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
     }
-    cout << "AVL " << v.size()<<" deletes = " << msecsAVL << " microseconds." << endl;
-    cout << "HT  " << v.size()<<" deletes = " << msecsHT << " microseconds."<< endl;
+    cout << "AVL  " << v.size()<<" deletes = " << msecsAVL << " microseconds." << endl;
+    cout << "2-5  " << v.size()<<" deletes = " << msecsHT << " microseconds."<< endl;
 }
 
 
-void sorted (hashTable &wordIndex, AVL &wordIndex2) {
+void sorted (Tree25 &wordIndex, AVL &wordIndex2) {
     
     struct timeval timer_usec;
     long long int timestamp_usec_before, timestamp_usec_after;
@@ -143,23 +143,24 @@ void sorted (hashTable &wordIndex, AVL &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     
-    cout << "AVL complete sort hotels-small " << timestamp_usec_after - timestamp_usec_before<< " microseconds." << endl;
+    cout << "AVL  complete sort hotels-small " << timestamp_usec_after - timestamp_usec_before<< " microseconds." << endl;
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
     
-    vector <string> s2 = wordIndex.sort(); // HT
+    vector <string> s2;
+    wordIndex.sorted(wordIndex.getHead(), s2); // HT
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
-    cout << "HT  complete sort hotels-small " << timestamp_usec_after - timestamp_usec_before << " microseconds." << endl;
+    cout << "2-5  complete sort hotels-small " << timestamp_usec_after - timestamp_usec_before << " microseconds." << endl;
     
 }
 
 
-void rangedSearch (hashTable &wordIndex, AVL &wordIndex2, int size) {
+void rangedSearch (Tree25 &wordIndex, AVL &wordIndex2, int size) {
 
     vector <string> s1;
     wordIndex2.sorted(wordIndex2.getHead(), s1); // AVL
@@ -201,7 +202,7 @@ void rangedSearch (hashTable &wordIndex, AVL &wordIndex2, int size) {
         //cout <<s4[i]<<endl;
     }
     
-    cout << "HT  " << size << " ranged search = " << timestamp_usec_after - timestamp_usec_before << " microseconds." << endl;
+    cout << "2-5  " << size << " ranged search = " << timestamp_usec_after - timestamp_usec_before << " microseconds." << endl;
 }
 
 
@@ -210,7 +211,7 @@ int main(int argc, char* argv[])
 {
     string dir; //
     vector<string> files = vector<string>();
-    hashTable wordIndex (77747);
+    Tree25 wordIndex;
     AVL wordIndex2;
     
     if (argc < 2)
@@ -304,8 +305,8 @@ int main(int argc, char* argv[])
         fin.close();
     }
     
-    cout << "AVL 100 inserts = " << msecsAVL << " microseconds." << endl;
-    cout << "HT  100 inserts = " << msecsHT << " microseconds."<< endl;
+    cout << "AVL  100 inserts = " << msecsAVL << " microseconds." << endl;
+    cout << "2-5  100 inserts = " << msecsHT << " microseconds."<< endl;
     
     search (wordIndex, wordIndex2, randomWordsSearch);
     rangedSearch(wordIndex, wordIndex2, 10);

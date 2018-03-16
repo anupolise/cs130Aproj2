@@ -109,7 +109,7 @@ void Tree25::printTree (node25* headz, string spaces) {
         for (i = headz->getTotal(); i > 0; i--) {
             printTree (headz->getPointer (i), spaces + "   ");
             if (i == headz->getTotal()) {
-                cout << spaces << "total=" << headz->getTotal() << endl;
+                //cout << spaces << "total=" << headz->getTotal() << endl;
             }
             cout << spaces << headz->getData (i-1) << "   " <<headz->getCounter(i-1) << endl;
             
@@ -119,18 +119,20 @@ void Tree25::printTree (node25* headz, string spaces) {
     }
 }
 
-/*
-void Tree25::sorted (node25* headz, vector <string> &list) {
-	if (headz!=NULL) {
-		sorted (headz->getLeft(), list);
-		for (int i = 0; i < headz ->getCounter(); i++) {
-			list.push_back (headz->getData());
-		}
-		sorted (headz->getRight(), list);
-	}
-}
-*/
 
+void Tree25::sorted (node25* headz, vector <string> &list) {
+    
+    if (headz != NULL) {
+        int i = 0;
+        for (i = headz->getTotal(); i > 0; i--) {
+            sorted (headz->getPointer (i), list);
+            for (int j = 0; j < headz ->getCounter(i); j++) {
+                list.push_back (headz->getData (i));
+            }
+        }
+        sorted (headz->getPointer (i), list);
+    }
+}
 
 int Tree25::search(string str) { return search (str, head); }
 
@@ -244,7 +246,7 @@ void Tree25::deleteNode(string str)
 bool Tree25::borrow (string str, node25* pointer, node25* newptr, int indexFromParent) {
     //int indexFromParent = pointer->getIntervalIndex (str);
     bool borrowed = false;
-    
+    //cout << "borrow ";
     // First attempt a borrow from the left, then the right
     if (indexFromParent > 0) { // borrow from left
         node25* leftNode = pointer->getPointer (indexFromParent-1);
@@ -271,8 +273,8 @@ bool Tree25::borrow (string str, node25* pointer, node25* newptr, int indexFromP
         }
     }
     if (!borrowed && indexFromParent < pointer->getTotal()) {
-        cout << "index = " << indexFromParent << endl;
-        cout << "totalPointer = " << pointer->getTotal() << endl;
+        //cout << "index = " << indexFromParent << endl;
+        //cout << "totalPointer = " << pointer->getTotal() << endl;
         // borrow from right
         node25* rightNode = pointer->getPointer (indexFromParent+1);
         //cout << "277" << endl;
@@ -317,6 +319,7 @@ node25* Tree25::merge (string str, node25* pointer, node25* newptr, int indexFro
         //cout << indexFromParent << endl;
         node25* rv = new node25 ();
         if (indexFromParent > 0) { // Merge with the left child node if empty node is from right side
+            //cout << "Merge left single parent node " << endl;
             node25* leftNode = pointer->getPointer (indexFromParent-1);
             rv->insert (leftNode->getData(0));
             rv->setCounter (leftNode->getData(0), leftNode->getCounter (0));
@@ -327,6 +330,9 @@ node25* Tree25::merge (string str, node25* pointer, node25* newptr, int indexFro
             rv->setPointer (0, leftNode->getPointer (0));
             rv->setPointer (1, leftNode->getPointer (1));
             rv->setPointer (2, newptr->getPointer (0));
+            
+            
+            
             
             pointer->setCounter (0, 0);
             pointer->setTotal (0);
@@ -340,7 +346,7 @@ node25* Tree25::merge (string str, node25* pointer, node25* newptr, int indexFro
             
             //cout << pointer->getData (indexFromParent+1) << endl;
             
-            
+            //cout << pointer->getData(0) << endl;
             rv->insert (pointer->getData(0));
             rv->setCounter (pointer->getData(0), pointer->getCounter (0));
             
@@ -358,9 +364,13 @@ node25* Tree25::merge (string str, node25* pointer, node25* newptr, int indexFro
     }
     // Case 2: total > 1 and merge left first
     else if (indexFromParent > 0) { // merge with left
+        //cout << " Merge left " << endl;
+        
         node25* leftNode = pointer->getPointer (indexFromParent-1);
         
+        //cout << leftNode ->getData (0)<< endl;
         leftNode->insert (pointer->getData (indexFromParent-1));
+        //cout << pointer->getData (indexFromParent-1)<<endl;
         leftNode->setCounter (pointer->getData (indexFromParent-1), pointer->getCounter (indexFromParent-1));
         
         leftNode->setPointer (2, newptr->getPointer (0));
@@ -370,18 +380,22 @@ node25* Tree25::merge (string str, node25* pointer, node25* newptr, int indexFro
             pointer->setPointer(i-1, pointer->getPointer (i));
         }
         pointer->setPointer (4, NULL);
+        
+        //cout << indexFromParent-1<<endl;
+        pointer->setPointer (indexFromParent-1, leftNode);
         pointer->deleteVal (pointer->getData (indexFromParent -1));
     }
     else { // merge right
+        //cout << " Merge right " << endl;
         node25* rightNode = pointer->getPointer (indexFromParent+1);
         //cout << "total= " << rightNode ->getTotal () << rightNode->getData (0) << endl;
         
         //cout << pointer->getData (indexFromParent+1) << endl;
         
-        rightNode->insert (pointer->getData (indexFromParent+1));
+        rightNode->insert (pointer->getData (indexFromParent));
+        //cout <<"hello "<<pointer->getData (indexFromParent) << endl;
         
-        
-        rightNode->setCounter (pointer->getData (indexFromParent+1), pointer->getCounter (indexFromParent+1));
+        rightNode->setCounter (pointer->getData (indexFromParent), pointer->getCounter (indexFromParent));
         
         //cout << " merge right " << endl;
         //cout << rightNode ->getTotal () << endl;
@@ -419,6 +433,9 @@ node25* Tree25::deleteNodeHelper (string str, node25 *pointer) {
         else {
             // merge or borrow
             // true if a borrow was successful
+            //cout << "pointer->total () = " << pointer->getTotal() << endl;
+            //cout << pointer->getData (0) << endl;
+            //cout << endl;
             bool borrowed = borrow (str, pointer, newptr, indexFromParent);
             
             // Borrow failed, so merge is required
@@ -444,7 +461,7 @@ node25* Tree25::deleteNodeHelper (string str, node25 *pointer) {
         
         node25* successor = pointer->getPointer (index);
         while (!successor->isLeaf()) {
-            successor = successor->getPointer (index);
+            successor = successor->getPointer (successor->getTotal ());
         }
         
         

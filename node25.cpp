@@ -55,7 +55,7 @@ string node25::getData(int i) {
 
 int node25::getCounter(string str)
 {
-    for(int i=0; i<SIZE; i++)
+    for(int i=0; i<getTotal(); i++)
     {
         if(str == (data[i]))
         {

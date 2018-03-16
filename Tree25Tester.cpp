@@ -17,8 +17,8 @@ int main()
     
     cout<< "Total = " << tree.getTotal (tree.getHead()) << endl;
     
-    string arr2[40] = {"sh","ss","sd", "sf", "ra", "sc", "ss", "sd", "zh", "hb", "ha", "gk", "gg", "dd", "ds", "hi", "ai", "at", "as", "av", "hh", "hb", "bc", "cf", "gh", "he", "ha", "zg", "sd", "sc", "zg", "gk", "zh", "ss", "sd", "sh", "sf", "sj"};
-    for (int i = 0; i < 12; i++) {
+    string arr2[40] = {"sh","ss","sd", "sf", "ra", "sc", "ss", "sd", "zh", "hb", "ha", "gk", "bd", "bd", "av", "at", "bb", "at", "as", "bc", "dd", "ds", "gh", "df", "gg", "gg", "ff", "zz", "zg", "zg", "ja", "ja", "ja", "hh", "he", "hi", "ai", "aa", "cf"};
+    for (int i = 0; i < 39; i++) {
         cout << "Delete " << arr2[i]<< endl;
         tree.deleteNode (arr2[i]);
         tree.printTree(tree.getHead(), "");
@@ -27,47 +27,6 @@ int main()
         cout << endl;
     }
     
-    //tree.printInOrder(tree.getHead());
-    
-    
-    
-    /*
-    int countin= tree.countInTree(tree.getHead());
-    cout<<"count:"<<countin<<endl;
-    
-    //string* v = tree.rangeSearch ("bd", "zz");
-    vector <string> v = tree.rangeSearch ("bd", "zz");
-    
-    cout << "Range Search ";
-    for (int i = 0; i < v.size(); i++) {
-        cout << (v)[i] << " ";
-    }
-    
-    cout << endl;
-    cout << endl;
-    int the = tree.search("hs");
-    cout<<"search hs - "<<the<<endl<<std::flush;
-    
-    int ben = tree.search("jj");
-    cout<<"search jj - "<<ben<<endl<<std::flush;
-
-    tree.printTree (tree.getHead(), "");
-    cout << "Begin deletion" << endl;
-    tree.deleteNode("ja");
-    tree.printTree (tree.getHead(), "");
-    tree.deleteNode("ja");
-    tree.printTree (tree.getHead(), "");
-    tree.deleteNode("aa");
-    tree.printTree (tree.getHead(), "");
-    tree.deleteNode("aa");
-    tree.printTree (tree.getHead(), "");
-    tree.deleteNode("aa");
-    tree.printTree (tree.getHead(), "");
-    tree.deleteNode("aa");
-    tree.printTree (tree.getHead(), "");
-    //tree.insert ("aa");
-    cout<<"delete aa"<<endl;
     tree.printInOrder(tree.getHead());
-     */
     
 }

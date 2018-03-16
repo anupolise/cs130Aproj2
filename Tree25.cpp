@@ -124,7 +124,7 @@ void Tree25::sorted (node25* headz, vector <string> &list) {
     
     if (headz != NULL) {
         int i = 0;
-        for (i = headz->getTotal(); i > 0; i--) {
+        for (i = 0; i < headz->getTotal(); i++) {
             sorted (headz->getPointer (i), list);
             for (int j = 0; j < headz ->getCounter(i); j++) {
                 list.push_back (headz->getData (i));

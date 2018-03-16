@@ -19,7 +19,7 @@ void AVL::insert (string str) { head = insert(str, head); }
 
 node* AVL::insert (string str, node* pointer)
 {
-	cout<<"INSERT: "<<str<<endl;
+	
 	//if theres nothing in the tree
 	if(pointer == NULL)
 	{
@@ -44,7 +44,7 @@ node* AVL::insert (string str, node* pointer)
 
 
                 pointer->updateHeight();
-				cout <<"right insert "<< pointer->getData()<< " " << pointer->getHeight() << endl;
+				
 			}
 
 			else
@@ -68,7 +68,7 @@ node* AVL::insert (string str, node* pointer)
 				//cout<<"str inserted:"<<str<<endl;
 				//pointer = rebalanceTree (pointer);
 				pointer->updateHeight();
-				cout <<" left insert " << pointer->getData()<< " " << pointer->getHeight() << endl;
+				
 				//cout << pointer->getHeight() << endl;
 			}
 			else
@@ -127,12 +127,9 @@ node* AVL::rebalanceTree (node* root) {
 		rightHeight = root->getRight()->getHeight();
 	} 
 
-	cout<< " right height: " << rightHeight<<endl;
-	cout<< " left height: " << leftHeight<<endl;
-	
 	//left rotate 
 	if (leftHeight - rightHeight > 1) {
-		cout << "Howdy1";
+		
 		int leftleft = 0;
 
 		int leftright = 0;
@@ -149,13 +146,13 @@ node* AVL::rebalanceTree (node* root) {
 
 
 		if (leftleft >= leftright) {
-			cout<<"left-left rotate"<<endl;
+			
 			node* temp = root->getLeft();
 			rightRotate (root, root->getLeft());
 			return temp;
 		}
 		else {
-			cout<<"left-right rotate"<<endl;
+			
 			node * temp = root->getLeft()->getRight();
 			leftRotate (root->getLeft(), root->getLeft()->getRight());
 			root->setLeft(temp);
@@ -178,16 +175,16 @@ node* AVL::rebalanceTree (node* root) {
 		}
 
 
-		cout << "Howdy2";
+		
 
 		if (rightright>=rightleft) {
-			cout<<"right-right rotate"<<endl;
+			
 			node* temp = root->getRight();
 			leftRotate (root, root->getRight());
 			return temp;
 		}
 		else {
-			cout<<"right-left rotate"<<endl;
+			
 			node * temp = root->getRight()->getLeft();
 			rightRotate (root->getRight(), root->getRight()->getLeft());
 			root->setRight(temp);

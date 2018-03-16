@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
     string dir; //
     vector<string> files = vector<string>();
     AVL wordIndex2;
+    Tree25 wordIndex1;
     
     if (argc < 2)
     {
@@ -95,6 +96,7 @@ int main(int argc, char* argv[])
             {
                 word = toUpper (word);
                 wordIndex2.insert(word);
+                wordIndex1.insert(word);
             }
            
             // Now the string "word" holds the keyword, and the string "files[i]" holds the document name.
@@ -115,30 +117,30 @@ int main(int argc, char* argv[])
         cin>>userInput;
         if(userInput == 1)
         {
-             search(wordIndex2);
+             search(wordIndex2,wordIndex1);
         }
         else if(userInput == 2)
         {
-            insert(wordIndex2);
+            insert(wordIndex2, wordIndex1);
         }
         else if(userInput == 3)
         {
-            deletion(wordIndex2);
+            deletion(wordIndex2, wordIndex1);
         }
         else if(userInput == 4)
         {
-            sorted(wordIndex2);
+            sorted(wordIndex2, wordIndex1);
         }
         else if(userInput ==5)
         {
-            rangedSearch(wordIndex2);
+            rangedSearch(wordIndex2, wordIndex1);
         }
         cout << endl;
     }
     return 0;
 }
 
-void search (AVL &wordIndex2) {
+void search (AVL &wordIndex2, Tree25 &wordIndex1) {
     //cout << endl;
     string word_to_be_found;
     cout << "> ";
@@ -165,14 +167,31 @@ void search (AVL &wordIndex2) {
         cout << "false" << endl;
     }
     cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    // if (!gettimeofday(&timer_usec, NULL)) {
+    //     timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
+    //     (long long int) timer_usec.tv_usec;
+    // }
+
+
+
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
 
+    wordIndex1.search(word_to_be_found); // 2-5
+
+    if (!gettimeofday(&timer_usec, NULL)) {
+        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
+        (long long int) timer_usec.tv_usec;
+    }
+    
+    cout << "2-5: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    
+
 }
 
-void insert (AVL &wordIndex2) {
+void insert (AVL &wordIndex2,Tree25 &wordIndex1) {
     string word_to_insert;
     cout << "> ";
     cin >> word_to_insert;
@@ -191,15 +210,30 @@ void insert (AVL &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+   
+
+
+      
+    
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
+
+    wordIndex1.insert(word_to_insert); // AVL
+    if (!gettimeofday(&timer_usec, NULL)) {
+        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
+        (long long int) timer_usec.tv_usec;
+    }
+    
+    cout << "2-5: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    
+    
     
 }
 
 
-void deletion (AVL &wordIndex2) {
+void deletion (AVL &wordIndex2, Tree25 &wordIndex1) {
     string word_to_delete;
     cout << "> ";
     cin >> word_to_delete;
@@ -219,15 +253,30 @@ void deletion (AVL &wordIndex2) {
         (long long int) timer_usec.tv_usec;
     }
     cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+   
+
+
+
+      
+   
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
+
+    wordIndex1.deleteNode(word_to_delete); // AVL
+    if (!gettimeofday(&timer_usec, NULL)) {
+        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
+        (long long int) timer_usec.tv_usec;
+    }
+    
+    cout << "2-5: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    
     
 }
 
 
-void sorted (AVL &wordIndex2) {
+void sorted (AVL &wordIndex2, Tree25 &wordIndex1) {
     string path = "output.txt";
     cout<<path<<endl;
 
@@ -251,22 +300,42 @@ void sorted (AVL &wordIndex2) {
     }
     
     cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+  
+
+
+    
+    
+   
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
+    vector <string> s2;
+    wordIndex1.sorted(wordIndex1.getHead(), s2); // AVL
+    if (!gettimeofday(&timer_usec, NULL)) {
+        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
+        (long long int) timer_usec.tv_usec;
+    }
     
-
+    cout << "2-5: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    
+    
     for(int i=0; i<s1.size(); i++)
     {
         output<<s1[i]<<endl;
+    }
+    output<<endl;
+    output<<endl;
+    for(int i=0; i<s2.size(); i++)
+    {
+        output<<s2[i]<<endl;
     }
 
     output<<endl;
 }
 
 
-void rangedSearch (AVL &wordIndex2) {
+void rangedSearch (AVL &wordIndex2, Tree25 &wordIndex1) {
     string lower, higher;
     cout << "> ";
     cin >> lower;
@@ -292,10 +361,23 @@ void rangedSearch (AVL &wordIndex2) {
         cout <<s1[i]<<endl;
     }
     cout << "AVL: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+   
+
+    
+    
     if (!gettimeofday(&timer_usec, NULL)) {
         timestamp_usec_before = ((long long int) timer_usec.tv_sec) * 1000000ll +
         (long long int) timer_usec.tv_usec;
     }
+    vector <string> s2 = wordIndex1.rangeSearch(lower, higher); // 2-5
+
+    if (!gettimeofday(&timer_usec, NULL)) {
+        timestamp_usec_after = ((long long int) timer_usec.tv_sec) * 1000000ll +
+        (long long int) timer_usec.tv_usec;
+    }
+    
+    cout << "2-5: " << float(timestamp_usec_after - timestamp_usec_before)/1000000.0 << " s" << endl;
+    
     
 }
 

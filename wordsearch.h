@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include "AVL.h"
+#include "Tree25.h"
 #include <algorithm>
 
 #include <time.h>
@@ -27,11 +28,11 @@
 int getdir (string dir, vector<string> &files);
 bool makeAlphaNum(string str);
 
-void search (AVL &wordIndex2);
-void insert (AVL &wordIndex2);
-void deletion (AVL &wordIndex2);
-void sorted (AVL &wordIndex2);
-void rangedSearch(AVL &wordIndex2);
+void search (AVL &wordIndex2, Tree25 &wordIndex1);
+void insert (AVL &wordIndex2, Tree25 &wordIndex1);
+void deletion (AVL &wordIndex2, Tree25 &wordIndex1);
+void sorted (AVL &wordIndex2, Tree25 &wordIndex1);
+void rangedSearch(AVL &wordIndex2, Tree25 &wordIndex1);
 
 
 int main(int argc, char* argv[]);

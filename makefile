@@ -1,9 +1,9 @@
 WordSearch: wordsearch.cpp AVL.cpp node.cpp 
-	g++ -std=c++11 AVL.cpp node.cpp wordsearch.cpp -c
-	g++ -std=c++11 AVL.o node.o wordsearch.o -o main
+	g++ -std=c++11 AVL.cpp node.cpp Tree25.cpp node25.cpp wordsearch.cpp -c
+	g++ -std=c++11 AVL.o node.o Tree25.o node25.o wordsearch.o -o main
 TimeTable: timeTable.cpp AVL.cpp node.cpp
-	g++ -std=c++11 AVL.cpp node.cpp timeTable.cpp -c
-	g++ -std=c++11 AVL.o node.o hashTable.o nodeHT.o timeTable.o -o TTmain
+	g++ -std=c++11 AVL.cpp node.cpp Tree25.cpp node25.cpp timeTable.cpp -c
+	g++ -std=c++11 AVL.o node.o Tree25.o node25.o timeTable.o -o TTmain
 
 AVL: AVLTester.cpp AVL.cpp node.cpp
 	g++ -std=c++11 AVL.cpp node.cpp AVLTester.cpp -c

@@ -191,7 +191,9 @@ void Tree25::rangeSearches (string a, string b, node25* pointer, vector <string>
                 rangeSearches (a, b, pointer->getPointer(i), list);
             }
         }
-        rangeSearches(a, b, pointer->getPointer(i), list);
+        if (pointer->getData (i) < b) {
+            rangeSearches(a, b, pointer->getPointer(i), list);
+        }
         
     }
 }

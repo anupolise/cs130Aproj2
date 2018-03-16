@@ -32,7 +32,7 @@ int main()
     //     cout << endl;
     //     cout << endl;
     // }
-    vector<string> s = tree.rangeSearch("ch","ja");
+    vector<string> s = tree.rangeSearch("d","hh");
 
     for(int i=0; i<s.size(); i++)
     {
